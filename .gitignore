@@ -1,5 +1,0 @@
-# ignore eclipse workspace directory
-.metadata
-
-# ignore tomcat server in eclipse
-Servers
