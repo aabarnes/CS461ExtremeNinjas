@@ -13,10 +13,10 @@
 <script type="text/javascript" charset="utf8"
 	src="js/jquery.dataTables.js"></script>
 <script>
-	
+
 $(document).ready( function () {
     $('#table_id').DataTable( {
-		"sAjaxSource": "search/getJSONResult.action",
+		"ajax": "search/getJSONResult.action",
 		"type": "POST",
 		"columns": [
 		  { "data": "id" },

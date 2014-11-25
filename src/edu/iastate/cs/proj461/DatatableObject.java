@@ -7,7 +7,7 @@ public abstract class DatatableObject {
 	private int iTotalRecords, iTotalDisplayRecords;
 	private String sEcho, sColumns;
 	List<?> data;	
-	
+
 	public abstract void setData(List<?> resultList);
 	
 	public abstract List<?> getData();
