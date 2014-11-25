@@ -21,7 +21,7 @@
 	<package name="search" namespace="/search" extends="json-default">
 		<action name="getJSONResult" class="edu.iastate.cs.proj461.SearchResultsAction">
 			<result type="json">
-				<param name="ignoreHierarchy">true</param>
+				<param name="ignoreHierarchy">false</param>
 				<param name="root">returnObj</param>
 			</result>
 		</action>
