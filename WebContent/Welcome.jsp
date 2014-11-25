@@ -38,13 +38,13 @@
 	</div>
     <s:url var="logout" action="logout"/>
     <s:url var="dummy1" action="ajax2"/>
-    <s:url var="search/results" action="search/getJSONResult"/>
+    <s:url var="search/VideoCaptureSearch" action="search/VideoCaptureSearchResultsAction"/>
     <s:url var="remoteurl4" action="ajax4"/>
     <s:url var="remoteurl5" action="echo"/>
     <sj:tabbedpanel id="remotetabs" selectedTab="1" show="true" hide="'fade'" >
         <sj:tab id="tab1" href="%{logout}" label="Logout"/>
         <sj:tab id="tab2" href="%{dummy1}" label="Remote Tab Two"/>
-        <sj:tab id="tab3" href="results.jsp" label="Search Results"/>
+        <sj:tab id="tab3" href="VideoCaptureSearch.jsp" label="Search Results"/>
         <sj:tab id="tab4" href="%{remoteurl4}" label="Remote Tab Four"/>
         <sj:tab id="tab5" formIds="echoForm" href="%{remoteurl5}" label="Echo Tab"/>
     </sj:tabbedpanel>
