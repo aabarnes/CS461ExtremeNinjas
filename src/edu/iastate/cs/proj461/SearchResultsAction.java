@@ -6,13 +6,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
 
+import com.opensymphony.xwork2.Action;
+
 public class SearchResultsAction implements ServletRequestAware {
 
 	
 	private HttpServletRequest request;
 	
 	private DatatableObject returnObj;
-	
+
 	public String execute() {
 		
 		//Dummy data
@@ -24,7 +26,7 @@ public class SearchResultsAction implements ServletRequestAware {
 		resultList.add(new DummyClass(id++, "Carly", "roomie"));
 		resultList.add(new DummyClass(id++, "Megan", "p@ssrd"));
 		resultList.add(new DummyClass(id++, "Ben", "p@ssw0rdStrong"));
-
+		
 		returnObj = new DummyClassDatatableObject();
 		returnObj.setiTotalDisplayRecords(resultList.size());
 		returnObj.setiTotalRecords(resultList.size());
@@ -36,7 +38,7 @@ public class SearchResultsAction implements ServletRequestAware {
 		//	Cast to corresponding class
 		returnObj.setData(resultList);
 		
-		return "success";
+		return Action.SUCCESS;
 	}
 
 	public DatatableObject getReturnObj() {
