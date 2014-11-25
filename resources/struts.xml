@@ -19,11 +19,13 @@
 		</action>
 	</package>
 	<package name="search" namespace="/search" extends="json-default">
-		<action name="getJSONResult" class="edu.iastate.cs.proj461.SearchResultsAction">
+
+		<action name="VideoCaptureSearchResultsAction" class="edu.iastate.cs.proj461.VideoCaptureSearchResultsAction">
 			<result type="json">
 				<param name="ignoreHierarchy">false</param>
 				<param name="root">returnObj</param>
 			</result>
 		</action>
+		
 	</package>
 </struts>
