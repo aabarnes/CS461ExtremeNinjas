@@ -52,7 +52,8 @@ public class VideoDAOImpl implements VideoDAO{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		Query query = session.createQuery("from Video where CapturedDateTime>:startdateTimeParam AND "
-				+ "CapturedDateTime<:enddateTimeParam");
+				+ "CapturedDateTime<:enddateTimeParam "
+				+ "ORDER BY CapturedDateTime desc");
 		final List<Video> results = new LinkedList<Video>();
 		Date startdate = new Date(datetime);
 		Date enddate = new Date(datetime + range);
