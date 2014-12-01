@@ -47,4 +47,25 @@ public class VideoDAOImpl implements VideoDAO{
 		return findVideoByCapturedDateTime(datetime, true);
 	}
 
+	@Override
+	public List<Video> findVideoByCapturedDateTimeRange(long datetime, long range) {
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("from Video where CapturedDateTime>:startdateTimeParam AND "
+				+ "CapturedDateTime<:enddateTimeParam");
+		final List<Video> results = new LinkedList<Video>();
+		Date startdate = new Date(datetime);
+		Date enddate = new Date(datetime + range);
+		query.setTimestamp("startdateTimeParam", startdate);
+		query.setTimestamp("enddateTimeParam", enddate);
+		
+		for(final Object o: query.list())
+		{
+			results.add((Video) o);
+		}
+		tx.commit();
+		session.close();
+		return results;
+	}
+
 }
