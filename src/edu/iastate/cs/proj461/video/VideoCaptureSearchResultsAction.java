@@ -1,4 +1,4 @@
-package edu.iastate.cs.proj461;
+package edu.iastate.cs.proj461.video;
 
 import java.util.ArrayList;
 import java.util.Date;

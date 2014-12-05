@@ -1,4 +1,4 @@
-package edu.iastate.cs.proj461;
+package edu.iastate.cs.proj461.room;
 
 import java.util.Date;
 import java.util.LinkedList;

@@ -2,6 +2,8 @@ package edu.iastate.cs.proj461;
 
 import java.util.List;
 
+import edu.iastate.cs.proj461.video.DatatableObject;
+
 public class DummyClassDatatableObject extends DatatableObject{
 
 	int iTotalRecords;
