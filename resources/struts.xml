@@ -20,7 +20,7 @@
 	</package>
 	<package name="search" namespace="/search" extends="json-default">
 
-		<action name="VideoCaptureSearchResultsAction" class="edu.iastate.cs.proj461.VideoCaptureSearchResultsAction">
+		<action name="VideoCaptureSearchResultsAction" class="edu.iastate.cs.proj461.video.VideoCaptureSearchResultsAction">
 			<result type="json">
 				<param name="ignoreHierarchy">false</param>
 				<param name="root">returnObj</param>
