@@ -1,8 +1,10 @@
 package edu.iastate.cs.proj461.video;
 
+import edu.iastate.cs.proj461.room.Room;
+
 public class Video {
 	
-	private int roomID;
+	private Room roomLocation;
 	private int videoID;
 	private double size;
 	private String length;
@@ -17,10 +19,10 @@ public class Video {
 		
 	}
 	
-	public Video(int roomID, int videoID, double size, String length, String CapturedVideoName,
+	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName,
 			String CapturedDateTime, String DateAnalysisDone,
 			String AnalysisDirName, String UploadedFileName, String MachineIP) {
-		this.roomID = roomID;
+		this.roomLocation = roomRecorded;
 		this.videoID = videoID;
 		this.size = size;
 		this.length = length;
@@ -32,16 +34,16 @@ public class Video {
 		this.MachineIP = MachineIP;
 	}
 	
-	public Video(int roomID, int videoID, double size, String length, String CapturedVideoName, String CapturedDateTime, 
+	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName, String CapturedDateTime, 
 			String MachineIP) {
-		this(roomID, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, MachineIP);
+		this(roomRecorded, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, MachineIP);
 	}
 	
-	public int getRoomID() {
-		return roomID;
+	public Room getRoom() {
+		return roomLocation;
 	}
-	public void setRoomID(int roomID) {
-		this.roomID = roomID;
+	public void setRoomID(Room roomRecorded) {
+		this.roomLocation = roomRecorded;
 	}
 	public int getVideoID() {
 		return videoID;
