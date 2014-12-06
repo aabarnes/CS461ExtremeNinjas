@@ -2,6 +2,7 @@
     <wb-module deploy-name="CS461ExtremeNinjas">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/resources"/>
         <property name="context-root" value="CS461ExtremeNinjas"/>
         <property name="java-output-path" value="/CS461ExtremeNinjas/build/classes"/>
     </wb-module>
