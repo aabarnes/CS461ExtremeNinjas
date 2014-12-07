@@ -1,5 +1,6 @@
 package edu.iastate.cs.proj461.video;
 
+import edu.iastate.cs.proj461.machine.Machine;
 import edu.iastate.cs.proj461.room.Room;
 
 public class Video {
@@ -13,7 +14,7 @@ public class Video {
 	private String DateAnalysisDone;
 	private String AnalysisDirName;
 	private String UploadedFileName;
-	private String MachineIP;
+	private Machine machine;
 	
 	public Video() {
 		
@@ -21,7 +22,7 @@ public class Video {
 	
 	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName,
 			String CapturedDateTime, String DateAnalysisDone,
-			String AnalysisDirName, String UploadedFileName, String MachineIP) {
+			String AnalysisDirName, String UploadedFileName, Machine machine) {
 		this.roomLocation = roomRecorded;
 		this.videoID = videoID;
 		this.size = size;
@@ -31,12 +32,12 @@ public class Video {
 		this.DateAnalysisDone = DateAnalysisDone;
 		this.AnalysisDirName = AnalysisDirName;
 		this.UploadedFileName = UploadedFileName;
-		this.MachineIP = MachineIP;
+		this.machine = machine;
 	}
 	
 	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName, String CapturedDateTime, 
-			String MachineIP) {
-		this(roomRecorded, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, MachineIP);
+			Machine machine) {
+		this(roomRecorded, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, machine);
 	}
 	
 	public Room getRoom() {
@@ -67,37 +68,37 @@ public class Video {
 		return CapturedVideoName;
 	}
 	public void setCapturedVideoName(String capturedVideoName) {
-		CapturedVideoName = capturedVideoName;
+		this.CapturedVideoName = capturedVideoName;
 	}
 	public String getCapturedDateTime() {
 		return CapturedDateTime;
 	}
 	public void setCapturedDateTime(String capturedDateTime) {
-		CapturedDateTime = capturedDateTime;
+		this.CapturedDateTime = capturedDateTime;
 	}
 	public String getDateAnalysisDone() {
 		return DateAnalysisDone;
 	}
 	public void setDateAnalysisDone(String dateAnalysisDone) {
-		DateAnalysisDone = dateAnalysisDone;
+		this.DateAnalysisDone = dateAnalysisDone;
 	}
 	public String getAnalysisDirName() {
 		return AnalysisDirName;
 	}
 	public void setAnalysisDirName(String analysisDirName) {
-		AnalysisDirName = analysisDirName;
+		this.AnalysisDirName = analysisDirName;
 	}
 	public String getUploadedFileName() {
 		return UploadedFileName;
 	}
 	public void setUploadedFileName(String uploadedFileName) {
-		UploadedFileName = uploadedFileName;
+		this.UploadedFileName = uploadedFileName;
 	}
-	public String getMachineIP() {
-		return MachineIP;
+	public Machine getMachine() {
+		return machine;
 	}
-	public void setMachineIP(String machineIP) {
-		MachineIP = machineIP;
+	public void setMachineIP(Machine machine) {
+		this.machine = machine;
 	}
 
 }
