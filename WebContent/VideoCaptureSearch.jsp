@@ -1,79 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
+    pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Search Results</title>
-
-<link href="css/jquery-ui.css" rel="stylesheet" />
-<link href="css/jquery.dataTables.css" rel="stylesheet" />
-
+<title>Insert title here</title>
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
-<script type="text/javascript" charset="utf8"
-	src="js/jquery.dataTables.js"></script>
-<script>
+<script type="text/javascript">
+function loadRoomNames() {
+	$( "#roomSelectInput" ).load("search/ListRoomsAction.action", function(response, status, jqXHR) {
+		if ( status == "error" ) {
+		    var msg = "Sorry but there was an error: ";
+		    alert( msg + xhr.status + " " + xhr.statusText );
+		  }
+		else {
+			var op = new Option();
+			op.value = 1;
+			op.text = "All";
+			$( "#roomSelectInput" ).options.add(op);
+			$.each(response, function(key, value) {
+				var op = new Option();
+				op.value = key+2;
+				op.text = value;
+				$( "#roomSelectInput" ).options.add(op);
+			});
+		}
+	});
+}
 
-$(document).ready( function () {
-    $('#table_id').DataTable( {
-		"ajax": "search/VideoCaptureSearchResultsAction.action",
-		"type": "POST",
-		"columns": [
-		  {		"data"	: "VideoID" 			},
-		  {		"data"	: "CapturedVideoName" 	},
-		  { 	"data"	: "CapturedDateTime" 	},
-		  { 	"data"	: "DateAnalysisDone" 	},
-		  { 	"data"	: "Length" 				},
-		  { 	"data"	: "Size" 				},
-		  { 	"data"	: "MachineIP" 			},
-		  { 	"data"	: "AnalysisDirName" 	},
-		  { 	"data"	: "RoomID" 				},
-		  { 	"data"	: "UploadedFileName" 	}
-		],
-		initComplete: function () {
-            var api = this.api();
- 
-            api.columns().indexes().flatten().each( function ( i ) {
-                var column = api.column( i );
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
- 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        }
-	} );
-} );
+$( "#dateInput" ).change( function() {
+	$( "#roomSelectInput" ).css('visibility', 'visible');
+});
+
+$( "#roomSelectInput" ).change( function() {
+	var params = {
+			"date": $( "#dateInput" ).val(),
+			"room": $( "#roomSelectInput" ).val()
+	}
+	$( "#resultPage" ).load("VideoCaptureSearchResults.jsp" + $.param(params));
+});
+
+$(document).ready( function() {
+	$( "#dateInput" ).val(new Date().toDateInputValue());
+	loadRoomNames();
+});
 
 </script>
-
 </head>
 <body>
-	<table id="video_capture_search_table_id" class="display">
-		<thead>
-			<tr>
-				<th>Video ID</th>
-				<th>Captured Video Name</th>
-				<th>Room ID</th>
-				<th>Captured DateTime</th>
-				<th>Date Analysis Done</th>
-				<th>Length</th>
-				<th>Size</th>
-				<th>Machine IP</th>
-				<th>Analysis DirName</th>
-				<th>Uploaded FileName</th>
-			</tr>
-		</thead>
-	</table>
+<form name="videoCaptureSearchForm" method="get" action="VideoCaptureSearchResults.jsp">
+Find:
+<input type="date" name="dateInput" id="dateInput"/>
+<select name="roomSelect" id="roomSelectInput" style="visibility:hidden;">
+</select>
+</form>
+<div id="resultPage"></div>
 </body>
 </html>
