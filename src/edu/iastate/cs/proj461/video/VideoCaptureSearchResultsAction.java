@@ -8,6 +8,7 @@ import org.apache.struts2.interceptor.ServletRequestAware;
 
 import com.opensymphony.xwork2.Action;
 
+import edu.iastate.cs.proj461.DatatableObject;
 import edu.iastate.cs.proj461.util.HibernateUtil;
 
 public class VideoCaptureSearchResultsAction implements ServletRequestAware {

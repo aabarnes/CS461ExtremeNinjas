@@ -1,4 +1,4 @@
-package edu.iastate.cs.proj461.video;
+package edu.iastate.cs.proj461;
 
 import java.util.List;
 
