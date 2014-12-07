@@ -43,23 +43,20 @@ public class RoomDAOImpl implements RoomDAO{
 	}
 
 	@Override
-	public List<Room> findRoomByName(String name) {
+	public Room findRoomByName(String name) {
 		Session session = null;
 		Transaction tx = null;
-		
-		final List<Room> matchingRooms = new LinkedList<Room>();
 
+		Room room;
+		
 		try {
-			session  = sf.openSession();
+			session = sf.openSession();
 			tx = session.beginTransaction();
 			Criteria crit = session.createCriteria(Room.class);
-			crit.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
-			for(final Object o: crit.list())
-			{
-				matchingRooms.add((Room) o);
-			}
+			crit.add(Restrictions.eq("name", name));
+			room = (Room) crit.uniqueResult();
 			tx.commit();
-			return matchingRooms;
+			return room;
 		}
 		catch (Exception ex) {
 			if(tx != null) tx.rollback();
@@ -86,6 +83,34 @@ public class RoomDAOImpl implements RoomDAO{
 			}
 			tx.commit();
 			return results;
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public List<Room> findRoomsByName(String name) {
+		Session session = null;
+		Transaction tx = null;
+		
+		final List<Room> matchingRooms = new LinkedList<Room>();
+
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			Criteria crit = session.createCriteria(Room.class);
+			crit.add(Restrictions.ilike("name", name, MatchMode.ANYWHERE));
+			for(final Object o: crit.list())
+			{
+				matchingRooms.add((Room) o);
+			}
+			tx.commit();
+			return matchingRooms;
 		}
 		catch (Exception ex) {
 			if(tx != null) tx.rollback();

@@ -5,7 +5,8 @@ import java.util.List;
 public interface RoomDAO {
 	
 	Room findRoomById(int id);
-	List<Room> findRoomByName(String name);
+	Room findRoomByName(String name);
+	List<Room> findRoomsByName(String name);
 	List<String> listRoomNames();
 
 }
