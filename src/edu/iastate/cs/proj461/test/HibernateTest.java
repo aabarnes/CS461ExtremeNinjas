@@ -15,7 +15,7 @@ public class HibernateTest {
 		
 		Date date = new Date();
 		
-		List<Video> resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime(date.toString(), 
+		List<Video> resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime("2014-12-07", 
 				true);
 	}
 

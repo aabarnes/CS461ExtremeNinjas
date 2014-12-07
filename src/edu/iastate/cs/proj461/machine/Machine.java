@@ -8,6 +8,10 @@ public class Machine {
 	private String diskState;
 	private String machineState;
 	
+	public Machine() {
+		
+	}
+	
 	public Machine(int id, String machineIP, String captureState, String diskState, String machineState){
 		this.id = id;
 		this.machineIP = machineIP;

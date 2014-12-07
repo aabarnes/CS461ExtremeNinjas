@@ -1,16 +1,23 @@
 package edu.iastate.cs.proj461.video;
 
+import java.util.Date;
+
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import edu.iastate.cs.proj461.machine.Machine;
 import edu.iastate.cs.proj461.room.Room;
 
 public class Video {
 	
-	private Room roomLocation;
+	private Room room;
 	private int videoID;
 	private double size;
 	private String length;
 	private String CapturedVideoName;
-	private String CapturedDateTime;
+	
+	//@Temporal(TemporalType.TIMESTAMP)
+	private Date CapturedDateTime;
 	private String DateAnalysisDone;
 	private String AnalysisDirName;
 	private String UploadedFileName;
@@ -21,9 +28,9 @@ public class Video {
 	}
 	
 	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName,
-			String CapturedDateTime, String DateAnalysisDone,
+			Date CapturedDateTime, String DateAnalysisDone,
 			String AnalysisDirName, String UploadedFileName, Machine machine) {
-		this.roomLocation = roomRecorded;
+		this.room = roomRecorded;
 		this.videoID = videoID;
 		this.size = size;
 		this.length = length;
@@ -35,16 +42,16 @@ public class Video {
 		this.machine = machine;
 	}
 	
-	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName, String CapturedDateTime, 
+	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName, Date CapturedDateTime, 
 			Machine machine) {
 		this(roomRecorded, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, machine);
 	}
 	
 	public Room getRoom() {
-		return roomLocation;
+		return room;
 	}
-	public void setRoomID(Room roomRecorded) {
-		this.roomLocation = roomRecorded;
+	public void setRoom(Room roomRecorded) {
+		this.room = roomRecorded;
 	}
 	public int getVideoID() {
 		return videoID;
@@ -70,10 +77,10 @@ public class Video {
 	public void setCapturedVideoName(String capturedVideoName) {
 		this.CapturedVideoName = capturedVideoName;
 	}
-	public String getCapturedDateTime() {
+	public Date getCapturedDateTime() {
 		return CapturedDateTime;
 	}
-	public void setCapturedDateTime(String capturedDateTime) {
+	public void setCapturedDateTime(Date capturedDateTime) {
 		this.CapturedDateTime = capturedDateTime;
 	}
 	public String getDateAnalysisDone() {
@@ -97,7 +104,7 @@ public class Video {
 	public Machine getMachine() {
 		return machine;
 	}
-	public void setMachineIP(Machine machine) {
+	public void setMachine(Machine machine) {
 		this.machine = machine;
 	}
 

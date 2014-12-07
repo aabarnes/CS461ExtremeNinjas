@@ -47,7 +47,7 @@ public class VideoDAOImpl implements VideoDAO{
 			crit.add(Restrictions.ge("CapturedDateTime", removeTime(date)));
 		else
 			//query.setTimestamp("dateTimeParam", date);
-			crit.add(Restrictions.ge("CapturedDateTime", date));
+			crit.add(Restrictions.ge("CapturedDateTime", date.toString()));
 		
 		crit.addOrder(Order.desc("CapturedDateTime"));
 		

@@ -11,17 +11,18 @@
 		</id>
 		<property name="size" column="Size" type="double"/>
 		<property name="length" column="Length" type="double"/>
-		<property name="capturedVideoName" column="CapturedVideoName" type="string"/>
-		<property name="capturedDateTime" column="CapturedDate"/>
-		<property name="dateAnalysisDone" column="DateAnalysisDone" type="date"/>
-		<property name="analysisDirName" column="AnalysisDirName" type="string"/>
-		<property name="uploadedFileName" column="UploadedFileName" type="string"/>
-		<property name="machineID" column="MachineID" type="int"/>
+		<property name="CapturedVideoName" column="CapturedVideoName" type="string"/>
+		<property name="CapturedDateTime" column="CapturedDate"/>
+		<property name="DateAnalysisDone" column="DateAnalysisDone" type="date"/>
+		<property name="AnalysisDirName" column="AnalysisDirName" type="string"/>
+		<property name="UploadedFileName" column="UploadedFileName" type="string"/>
+		<!-- <property name="machineID" column="MachineID" type="int"/> -->
 		
-		<many-to-one name="machineID" class="edu.iastate.cs.proj461.machine.Machine" column="MachineID"/>
-		<many-to-one name="roomLocation" class="edu.iastate.cs.proj461.room.Room" column="RoomID"/>
+		<many-to-one name="machine" class="edu.iastate.cs.proj461.machine.Machine" column="MachineID"/>
+		<many-to-one name="room" class="edu.iastate.cs.proj461.room.Room" column="RoomID"/>
 	</class>
 	
+	<!-- 
 	<class name="edu.iastate.cs.proj461.room.Room" table="Room">
 		<id name="roomID" type="int" column="RoomID">
 			<generator class="native" />
@@ -31,5 +32,5 @@
 		<property name="machineID" column="MachineID" type="int"/>
 			
 	</class>
-
+ -->
 </hibernate-mapping>

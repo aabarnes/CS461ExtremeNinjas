@@ -11,10 +11,11 @@
 		</id>
 		<property name="name" column="Name" type="string"/>
 		<property name="lastCapture" column="LastCapture" type="date"/>
-		<many-to-one name="machineID" column="MachineID" unique="true" 
+		<many-to-one name="machine" column="MachineID" unique="true" 
 			class="edu.iastate.cs.proj461.machine.Machine"/>
 	</class>
 	
+	<!-- 
 	<class name="edu.iastate.cs.proj461.machine.Machine" table="Machine">
 		<id name="id" type="int" column="MachineID">
 			<generator class="native" />
@@ -24,5 +25,5 @@
 		<property name="diskState" column="DiskState" type="string"/>
 		<property name="machineState" column="MachineState" type="string"/>	
 	</class>
-
+ -->
 </hibernate-mapping>

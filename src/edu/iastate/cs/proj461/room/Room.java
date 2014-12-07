@@ -2,22 +2,24 @@ package edu.iastate.cs.proj461.room;
 
 import java.util.Date;
 
+import edu.iastate.cs.proj461.machine.Machine;
+
 public class Room {
 	
 	private int roomID;
 	private String name;
 	private Date lastCapture;
-	private String machineIP;
+	private Machine machine;
 	
-	public Room(int roomID, String name, Date lastCapture, String machineIP) {
+	public Room(int roomID, String name, Date lastCapture, Machine machine) {
 		this.roomID = roomID;
 		this.name = name;
 		this.lastCapture = lastCapture;
-		this.machineIP = machineIP;
+		this.machine = machine;
 	}
 	
-	public Room(int roomID, String name, String machineIP) {
-		this(roomID, name, null, machineIP);
+	public Room(int roomID, String name, Machine machine) {
+		this(roomID, name, null, machine);
 	}
 	
 	public int getRoomID() {
@@ -38,11 +40,11 @@ public class Room {
 	public void setLastCapture(Date lastCapture) {
 		this.lastCapture = lastCapture;
 	}
-	public String getMachineIP() {
-		return machineIP;
+	public Machine getMachine() {
+		return machine;
 	}
-	public void setMachineIP(String machineIP) {
-		this.machineIP = machineIP;
+	public void setMachine(Machine machine) {
+		this.machine = machine;
 	}
 
 }

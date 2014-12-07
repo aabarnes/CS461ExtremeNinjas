@@ -25,6 +25,8 @@
         <property name="hbm2ddl.auto">update</property>
  
         <mapping resource="Video.hbm.xml" />
+        <mapping resource="Machine.hbm.xml" />
+        <mapping resource="Room.hbm.xml" />
  
     </session-factory>
 </hibernate-configuration>
