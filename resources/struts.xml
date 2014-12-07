@@ -27,5 +27,13 @@
 			</result>
 		</action>
 		
+		<action name="ListRoomsAction" class="edu.iastate.cs.proj461.RoomSearchAction" method="getRoomNames">
+			<result type="json">
+				<param name="ignoreHierarchy">false</param>
+				<param name="root">returnObj</param>
+			</result>
+		</action>
+		
+		
 	</package>
 </struts>
