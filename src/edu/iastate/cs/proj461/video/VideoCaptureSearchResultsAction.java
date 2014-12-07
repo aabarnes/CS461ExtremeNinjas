@@ -1,7 +1,5 @@
 package edu.iastate.cs.proj461.video;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +24,7 @@ public class VideoCaptureSearchResultsAction implements ServletRequestAware {
 
 		//Fetch data from database here
 		//	Cast to corresponding class
-		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime((long) request.getAttribute("datetime"), 
+		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime((String) request.getAttribute("datetime"), 
 				(boolean) request.getAttribute("searchEntireDay"));
 		
 		//Assign fetched data to return object here

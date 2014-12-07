@@ -1,5 +1,7 @@
 package edu.iastate.cs.proj461.video;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
@@ -23,12 +25,18 @@ public class VideoDAOImpl implements VideoDAO{
 	}
 
 	@Override
-	public List<Video> findVideoByCapturedDateTime(long datetime, boolean searchEntireDay) {
+	public List<Video> findVideoByCapturedDateTime(String datetime, boolean searchEntireDay) {
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		//Query query = session.createQuery("from Video where CapturedDateTime>:dateTimeParam");
 		final List<Video> results = new LinkedList<Video>();
-		Date date = new Date(datetime);
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-mm-dd");
+		Date date = null;
+		try {
+			date = formatter.parse(datetime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		
 		Criteria crit = session.createCriteria(Video.class);
 		//crit.add(Restrictions.ge("CapturedDateTime", date));
@@ -62,12 +70,12 @@ public class VideoDAOImpl implements VideoDAO{
 	}
 
 	@Override
-	public List<Video> findVideoByCapturedDateTime(long datetime) {
+	public List<Video> findVideoByCapturedDateTime(String datetime) {
 		return findVideoByCapturedDateTime(datetime, true);
 	}
 
 	@Override
-	public List<Video> findVideoByCapturedDateTimeRange(long datetime, long range) {
+	public List<Video> findVideoByCapturedDateTimeRange(String datetime, long range) {
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit = session.createCriteria(Video.class);

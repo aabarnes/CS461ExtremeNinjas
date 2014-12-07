@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface VideoDAO {
 
-	List<Video> findVideoByCapturedDateTime(long datetime, boolean searchEntireDay);
-	List<Video> findVideoByCapturedDateTime(long datetime);
-	List<Video> findVideoByCapturedDateTimeRange(long datetime, long range);
+	List<Video> findVideoByCapturedDateTime(String datetime, boolean searchEntireDay);
+	List<Video> findVideoByCapturedDateTime(String datetime);
+	List<Video> findVideoByCapturedDateTimeRange(String datetime, long range);
 }
