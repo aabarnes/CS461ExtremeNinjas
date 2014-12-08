@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="edu.iastate.cs.proj461.user.User" table="User">
+		<id name="id" type="int" column="UserID">
+			<generator class="native" />
+		</id>
+		<property name="fname" column="Fname" type="string"/>
+		<property name="lname" column="Lname" type="string"/>
+		<property name="username" column="Username" type="string"/>
+		<property name="password" column="Password" type="string"/>
+		<property name="email" column="Email" type="string"/>
+		<many-to-one name="pos" column="Role" unique="true" class="edu.iastate.cs.proj461.user.Position"/>
+	</class>
+
+</hibernate-mapping>

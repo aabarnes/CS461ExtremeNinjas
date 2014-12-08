@@ -27,6 +27,11 @@
         <mapping resource="Video.hbm.xml" />
         <mapping resource="Machine.hbm.xml" />
         <mapping resource="Room.hbm.xml" />
+        <mapping resource="MachineSpecValues.hbm.xml"/>
+        <mapping resource="Position.hbm.xml"/>
+        <mapping resource="User.hbm.xml"/>
+        <mapping resource="MachineSoftware.hbm.xml"/>
+        
  
     </session-factory>
 </hibernate-configuration>
