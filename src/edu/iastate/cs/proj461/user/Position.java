@@ -9,6 +9,22 @@ public class Position {
 	private int roleID;
 	private String title;
 	
+	public enum Role {
+		SYSTEM_ADMIN(1),
+		ADMIN(2),
+		DOCTOR(3),
+		NURESE(4);
+		
+		private Role(int value) {
+			this.value = value;
+		}
+		
+		public int getRoleValue() {
+			return value;
+		}
+		private int value;
+	}
+	
 	
 	public Position(int roleID, String title){
 		this.roleID = roleID;

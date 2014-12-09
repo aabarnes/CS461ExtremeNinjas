@@ -10,6 +10,9 @@ public class User {
 	private String email;
 	private Position pos;
 	
+	public User() {
+		
+	}
 	
 	public User(int id, String fName, String lName, String username, String password, String email, Position pos){
 		this.id = id;
