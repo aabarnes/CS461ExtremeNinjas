@@ -1,8 +1,11 @@
 package edu.iastate.cs.proj461.room;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -120,5 +123,45 @@ public class RoomDAOImpl implements RoomDAO{
 			session.close();
 		}
 	}
+
+	@Override
+	public List<Room> findIdleRooms(int withinNumDays) {
+		Session session = null;
+		Transaction tx = null;
+		
+		final List<Room> matchingRooms = new LinkedList<Room>();
+
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			Criteria crit = session.createCriteria(Room.class);
+			Date currentDate = removeTime(new Date());
+			Date thresholdDate = new Date(currentDate.getTime() - TimeUnit.DAYS.toMillis(withinNumDays));
+			crit.add(Restrictions.lt("lastCapture", thresholdDate));
+			for(final Object o: crit.list())
+			{
+				matchingRooms.add((Room) o);
+			}
+			tx.commit();
+			return matchingRooms;
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	private static Date removeTime(Date date) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime();
+    }
 
 }

@@ -8,5 +8,6 @@ public interface RoomDAO {
 	Room findRoomByName(String name);
 	List<Room> findRoomsByName(String name);
 	List<String> listRoomNames();
+	List<Room> findIdleRooms(int withinNumDays);
 
 }
