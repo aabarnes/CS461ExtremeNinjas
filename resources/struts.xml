@@ -8,7 +8,7 @@
 	<constant name="struts.devMode" value="false" />
 	<constant name="struts.custom.i18n.resources" value="ApplicationResources" />
 
-	<package name="default" extends="struts-default" namespace="/">
+	<package name="default" extends="struts-default">
 		<action name="login" class="edu.iastate.cs.proj461.LoginAction">
 			<result name="success">Welcome.jsp</result>
 			<result name="error">Login.jsp</result>
@@ -21,10 +21,11 @@
 	<package name="search" namespace="/search" extends="json-default">
 
 		<action name="VideoCaptureSearchResultsAction" class="edu.iastate.cs.proj461.video.VideoCaptureSearchResultsAction">
-			<result type="json">
+			<result name="success" type="json">
 				<param name="ignoreHierarchy">false</param>
 				<param name="root">returnObj</param>
 			</result>
+			<result name="input">VideoCaptureSearch.jsp</result>
 		</action>
 		
 		<action name="ListRoomsAction" class="edu.iastate.cs.proj461.room.RoomSearchAction" method="getRoomNames">

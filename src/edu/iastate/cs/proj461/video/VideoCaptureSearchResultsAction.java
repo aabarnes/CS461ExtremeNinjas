@@ -1,28 +1,38 @@
 package edu.iastate.cs.proj461.video;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.ServletRequestAware;
+import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.Action;
+import com.opensymphony.xwork2.ActionSupport;
 
 import edu.iastate.cs.proj461.DatatableObject;
+import edu.iastate.cs.proj461.user.Position;
+import edu.iastate.cs.proj461.user.UserDAO;
+import edu.iastate.cs.proj461.user.UserDAOImpl;
 import edu.iastate.cs.proj461.util.HibernateUtil;
 
-public class VideoCaptureSearchResultsAction implements ServletRequestAware {
+public class VideoCaptureSearchResultsAction extends ActionSupport implements SessionAware {
 
 	
 	private HttpServletRequest request;
 	
 	private DatatableObject returnObj;
-
+	
+	private SessionMap<String, Object> sessionMap;
+	
+	@Override
 	public String execute() {
 		
 		List<Video> resultList;
 		VideoDAO videoDAO = new VideoDAOImpl(HibernateUtil.getSessionFactory());
-
+		
 		//Fetch data from database here
 		//	Cast to corresponding class
 		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime((String) request.getAttribute("datetime"), 
@@ -32,6 +42,19 @@ public class VideoCaptureSearchResultsAction implements ServletRequestAware {
 		returnObj.setData(resultList);
 				
 		return Action.SUCCESS;
+	}
+	
+	@Override
+	public void validate() {
+		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
+		int positionID = userDAO.getUserPosition((String)sessionMap.get("username")).getRoleID();
+
+		if(!(positionID == Position.Role.SYSTEM_ADMIN.getRoleValue() ||
+				positionID == Position.Role.ADMIN.getRoleValue() ||
+				positionID == Position.Role.DOCTOR.getRoleValue() ||
+				positionID == Position.Role.NURESE.getRoleValue())) {
+			addActionError("Insufficient Privileges.");
+		}
 	}
 
 	public DatatableObject getReturnObj() {
@@ -43,11 +66,7 @@ public class VideoCaptureSearchResultsAction implements ServletRequestAware {
 	}
 
 	@Override
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
-	}
-	
-	public HttpServletRequest getServletRequest() {
-		return request;
+	public void setSession(Map<String, Object> map) {
+		sessionMap = (SessionMap<String, Object>) map;		
 	}
 }
