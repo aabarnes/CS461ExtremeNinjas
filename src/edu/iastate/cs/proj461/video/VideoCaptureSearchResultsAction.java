@@ -47,12 +47,18 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 	@Override
 	public void validate() {
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
-		int positionID = userDAO.getUserPosition((String)sessionMap.get("username")).getRoleID();
+		String username = (String) sessionMap.get("username");
+		int positionID = -1;
+		if(username != null)
+			positionID = userDAO.getUserPosition(username).getRoleID();
+		else {
+			addActionError("Not currently logged in.");
+		}
 
 		if(!(positionID == Position.Role.SYSTEM_ADMIN.getRoleValue() ||
 				positionID == Position.Role.ADMIN.getRoleValue() ||
 				positionID == Position.Role.DOCTOR.getRoleValue() ||
-				positionID == Position.Role.NURESE.getRoleValue())) {
+				positionID == Position.Role.NURSE.getRoleValue())) {
 			addActionError("Insufficient Privileges.");
 		}
 	}

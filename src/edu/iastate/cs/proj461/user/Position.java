@@ -13,7 +13,7 @@ public class Position {
 		SYSTEM_ADMIN(1),
 		ADMIN(2),
 		DOCTOR(3),
-		NURESE(4);
+		NURSE(4);
 		
 		private Role(int value) {
 			this.value = value;
