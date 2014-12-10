@@ -80,9 +80,11 @@ public class RoomDAOImpl implements RoomDAO{
 		try {
 			session = sf.openSession();
 			tx = session.beginTransaction();
-			for(final Object o: session.createCriteria(Room.class).list())
+			//for(final Object o: session.createCriteria(Room.class).list())
+			for(final Object o: session.createQuery("Select r.name from Room r").list())
 			{
-				results.add( ((Room) o).getName() );
+				//results.add( ((Room) o).getName() );
+				results.add((String) o);
 			}
 			tx.commit();
 			return results;

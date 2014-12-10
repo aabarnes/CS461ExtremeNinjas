@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+	"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+	<class name="edu.iastate.cs.proj461.machine.MachineSpecValue" table="MachineSpecValues">
+		<composite-id>
+			<key-property name="softwareCode" column="Code"/>
+			<key-property name="machineID" column="MachineID"/>
+		<!-- 
+			<key-many-to-one name="software" column="Code" class="edu.iastate.cs.proj461.machine.MachineSoftware"/>
+			<key-many-to-one name="machine" column="MachineID" class="edu.iastate.cs.proj461.machine.Machine"/>
+		-->
+		</composite-id>
+		<property name="value" column="Value" type="string"/>
+		
+		<many-to-one name="machineID" class="edu.iastate.cs.proj461.machine.Machine"
+			insert="false"
+			update="false">
+			<column name="MachineID" />
+
+		</many-to-one>
+			
+		<many-to-one name="softwareCode" class="edu.iastate.cs.proj461.machine.MachineSoftware"
+			insert="false"
+			update="false"
+			column="Code" />
+	</class>
+
+</hibernate-mapping>

@@ -1,5 +1,7 @@
 package edu.iastate.cs.proj461.video;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -31,12 +33,21 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 	public String execute() {
 		
 		List<Video> resultList;
+		SimpleDateFormat dateFormat;
 		VideoDAO videoDAO = new VideoDAOImpl(HibernateUtil.getSessionFactory());
 		
 		//Fetch data from database here
 		//	Cast to corresponding class
-		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTime((String) request.getAttribute("datetime"), 
-				(boolean) request.getAttribute("searchEntireDay"));
+		String fromJSP = (String) request.getAttribute("datetime");
+		System.out.println(fromJSP);
+		String datetime = (String) request.getAttribute("datetime");
+		if(datetime == null) {
+			//dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			//datetime = (new Date().toString());
+			datetime = "2014-12-07";
+		}
+		int roomID = (int) request.getAttribute("room");
+		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTimeAndRoom(datetime, roomID);
 		
 		//Assign fetched data to return object here
 		returnObj.setData(resultList);
@@ -46,6 +57,7 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 	
 	@Override
 	public void validate() {
+		/*
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
 		String username = (String) sessionMap.get("username");
 		int positionID = -1;
@@ -61,6 +73,7 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 				positionID == Position.Role.NURSE.getRoleValue())) {
 			addActionError("Insufficient Privileges.");
 		}
+		*/
 	}
 
 	public DatatableObject getReturnObj() {

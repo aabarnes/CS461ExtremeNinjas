@@ -11,6 +11,10 @@ public class Room {
 	private Date lastCapture;
 	private Machine machine;
 	
+	public Room() {
+		
+	}
+	
 	public Room(int roomID, String name, Date lastCapture, Machine machine) {
 		this.roomID = roomID;
 		this.name = name;

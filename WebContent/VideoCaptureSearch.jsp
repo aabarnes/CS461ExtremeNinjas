@@ -5,26 +5,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Insert title here</title>
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript">
 	function loadRoomNames() {
-		$("#roomSelectInput").load("search/ListRoomsAction.action",
+		$.post("search/ListRoomsAction.action",
 				function(response, status, jqXHR) {
 					if (status == "error") {
 						var msg = "Sorry but there was an error: ";
 						alert(msg + xhr.status + " " + xhr.statusText);
 					} else {
-						var op = new Option();
-						op.value = 1;
-						op.text = "All";
-						$("#roomSelectInput").options.add(op);
-						$.each(response, function(key, value) {
+						var roomSelect = $("#roomSelectInput");
+						$.each(response.data, function(key, value) {
 							var op = new Option();
 							op.value = key + 2;
 							op.text = value;
-							$("#roomSelectInput").options.add(op);
+							roomSelect.append(op);
 						});
 					}
 				});
@@ -40,13 +37,20 @@
 					"date" : $("#dateInput").val(),
 					"room" : $("#roomSelectInput").val()
 				}
+				console.log("VideoCaptureSearchResults.jsp?" + $.param(params));
 				$("#resultPage").load(
-						"VideoCaptureSearchResults.jsp" + $.param(params));
+						"VideoCaptureSearchResults.jsp?" + $.param(params));
 			});
 
 	$(document).ready(function() {
 		$("#dateInput").val(new Date().toDateInputValue());
 		loadRoomNames();
+	});
+	
+	Date.prototype.toDateInputValue = (function() {
+	    var local = new Date(this);
+	    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+	    return local.toJSON().slice(0,10);
 	});
 </script>
 </head>
@@ -58,8 +62,10 @@
 	</s:if>
 	<form name="videoCaptureSearchForm" method="get"
 		action="VideoCaptureSearchResults.jsp">
-		Find: <input type="date" name="dateInput" id="dateInput" /> <select
-			name="roomSelect" id="roomSelectInput" style="visibility: hidden;">
+		Find: <input type="date" name="dateInput" id="dateInput" />
+		<select
+			name="roomSelect" id="roomSelectInput">
+			<option id="all" value="All">All</option>
 		</select>
 	</form>
 	<div id="resultPage"></div>

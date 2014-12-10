@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+	
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -12,6 +14,8 @@
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" charset="utf8"
 	src="js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8"
+	src="js/dataTables.tableTools.js"></script>
 <script>
 
 $(document).ready( function () {
@@ -19,7 +23,8 @@ $(document).ready( function () {
 		"ajax": {
 			"url": "search/VideoCaptureSearchResultsAction.action",
 			"data":  {
-					"datetime": getParamterByName("date"),
+					"datetime": getParameterByName("date"),
+					"room": getParameterByName("room"),
 					
 				}
 			},
@@ -34,7 +39,7 @@ $(document).ready( function () {
 		  { 	"data"	: "AnalysisDirName" 	},
 		  { 	"data"	: "RoomID" 				},
 		  { 	"data"	: "UploadedFileName" 	}
-		],
+		]<%--,
 		initComplete: function () {
             var api = this.api();
  
@@ -56,6 +61,9 @@ $(document).ready( function () {
                     select.append( '<option value="'+d+'">'+d+'</option>' )
                 } );
             } );
+        }--%>,
+        "oTableTools": {
+        	"sSwfPath": "media/copy_csv_xls_pdf.swf"
         }
 	} );
 } );
@@ -71,6 +79,11 @@ function getParameterByName(name) {
 
 </head>
 <body>
+	<s:if test="hasActionErrors()">
+		<div class="errors">
+			<s:actionerror />
+		</div>
+	</s:if>
 	<table id="video_capture_search_table_id" class="display">
 		<thead>
 			<tr>

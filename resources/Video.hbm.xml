@@ -12,7 +12,7 @@
 		<property name="size" column="Size" type="double"/>
 		<property name="length" column="Length" type="double"/>
 		<property name="CapturedVideoName" column="CapturedVideoName" type="string"/>
-		<property name="CapturedDateTime" column="CapturedDate"/>
+		<property name="CapturedDateTime" column="CapturedDate" type="date" />
 		<property name="DateAnalysisDone" column="DateAnalysisDone" type="date"/>
 		<property name="AnalysisDirName" column="AnalysisDirName" type="string"/>
 		<property name="UploadedFileName" column="UploadedFileName" type="string"/>

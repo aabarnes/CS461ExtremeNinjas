@@ -1,5 +1,7 @@
 package edu.iastate.cs.proj461.user;
 
+import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,12 +18,12 @@ public class UserDAOImpl implements UserDAO{
 
 	@Override
 	public User getUserByCredentials(String username, String password) {
-		System.out.println("Fetching User");
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
-		Criteria crit = session.createCriteria(User.class);
-		crit.add(Restrictions.eq("username", username));
-		User user = (User) crit.uniqueResult();
+		//Criteria crit = session.createCriteria(User.class);
+		//crit.add(Restrictions.eq("userName", username));
+		//User user = (User) crit.uniqueResult();
+		User user = (User) session.createQuery("from User u where u.userName =:name and u.password = :pass").setParameter("name", username).setParameter("pass", password).uniqueResult();
 		tx.commit();
 		session.close();
 		return user;
@@ -31,11 +33,22 @@ public class UserDAOImpl implements UserDAO{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		Criteria crit = session.createCriteria(User.class);
-		crit.add(Restrictions.eq("username", username));
+		crit.add(Restrictions.eq("userName", username));
 		User user = (User) crit.uniqueResult();
 		tx.commit();
 		session.close();
 		return user.getPos();
+	}
+	
+	public List<User> getAllUsers() {
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		Criteria crit = session.createCriteria(User.class);
+		
+		List<User> users = (List<User>) crit.list();
+		tx.commit();
+		session.close();
+		return users;
 	}
 
 }

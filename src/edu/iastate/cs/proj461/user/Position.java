@@ -25,6 +25,10 @@ public class Position {
 		private int value;
 	}
 	
+	public Position() {
+		
+	}
+	
 	
 	public Position(int roleID, String title){
 		this.roleID = roleID;

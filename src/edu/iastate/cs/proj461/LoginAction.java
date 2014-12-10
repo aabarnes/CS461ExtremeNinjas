@@ -27,8 +27,11 @@ public class LoginAction extends ActionSupport implements SessionAware{
  
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
 		User userDB = userDAO.getUserByCredentials(username, password);
-		if(userDB == null)
+		if(userDB == null) {
+			System.out.println("UserDB is null");
 			return Action.ERROR;
+		}
+			
 		else {
 			sessionMap.put("username", username);
 			return Action.SUCCESS;
@@ -45,7 +48,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 		return Action.SUCCESS;
 	}
  
-    /*
+    
     public String getUsername() {
         return username;
     }
@@ -61,5 +64,5 @@ public class LoginAction extends ActionSupport implements SessionAware{
     public void setPassword(String password) {
         this.password = password;
     }
-    */
+    
 }

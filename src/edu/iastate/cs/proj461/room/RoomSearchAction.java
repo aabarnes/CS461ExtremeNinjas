@@ -17,7 +17,9 @@ public class RoomSearchAction {
 		RoomDAO roomDAO = new RoomDAOImpl(HibernateUtil.getSessionFactory());
 		
 		roomNames = roomDAO.listRoomNames();
+		System.out.println(roomNames);
 		
+		returnObj = new DatatableObject();
 		returnObj.setData(roomNames);
 		
 		return Action.SUCCESS;

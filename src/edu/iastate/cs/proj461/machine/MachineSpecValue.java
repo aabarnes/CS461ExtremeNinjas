@@ -1,31 +1,20 @@
 package edu.iastate.cs.proj461.machine;
 
+
 public class MachineSpecValue {
+
 	
-	private MachineSoftware software;
-	private Machine machine;
+	private int machineID;
+	private int softwareCode;
 	private String value;
 	
-	public MachineSpecValue(MachineSoftware software, Machine machine, String value){
-		this.software = software;
-		this.machine = machine;
-		this.value = value;
+	MachineSpecValue() {
+		
 	}
-
-	public MachineSoftware getSoftware() {
-		return software;
-	}
-
-	public void setSoftware(MachineSoftware software) {
-		this.software = software;
-	}
-
-	public Machine getMachine() {
-		return machine;
-	}
-
-	public void setMachine(Machine machine) {
-		this.machine = machine;
+	
+	public MachineSpecValue(Machine machine, MachineSoftware software){
+		this.machineID = machine.getId();
+		this.softwareCode = software.getCode();
 	}
 
 	public String getValue() {
@@ -35,5 +24,22 @@ public class MachineSpecValue {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
+	public int getMachineID() {
+		return machineID;
+	}
+
+	public void setMachineID(int machineID) {
+		this.machineID = machineID;
+	}
+
+	public int getSoftwareCode() {
+		return softwareCode;
+	}
+
+	public void setSoftwareCode(int softwareCode) {
+		this.softwareCode = softwareCode;
+	}
+
+
 }

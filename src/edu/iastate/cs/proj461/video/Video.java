@@ -1,6 +1,7 @@
 package edu.iastate.cs.proj461.video;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -13,12 +14,12 @@ public class Video {
 	private Room room;
 	private int videoID;
 	private double size;
-	private String length;
+	private double length;
 	private String CapturedVideoName;
 	
 	//@Temporal(TemporalType.TIMESTAMP)
 	private Date CapturedDateTime;
-	private String DateAnalysisDone;
+	private Date DateAnalysisDone;
 	private String AnalysisDirName;
 	private String UploadedFileName;
 	private Machine machine;
@@ -27,8 +28,8 @@ public class Video {
 		
 	}
 	
-	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName,
-			Date CapturedDateTime, String DateAnalysisDone,
+	public Video(Room roomRecorded, int videoID, double size, double length, String CapturedVideoName,
+			Date CapturedDateTime, Date DateAnalysisDone,
 			String AnalysisDirName, String UploadedFileName, Machine machine) {
 		this.room = roomRecorded;
 		this.videoID = videoID;
@@ -42,7 +43,7 @@ public class Video {
 		this.machine = machine;
 	}
 	
-	public Video(Room roomRecorded, int videoID, double size, String length, String CapturedVideoName, Date CapturedDateTime, 
+	public Video(Room roomRecorded, int videoID, double size, double length, String CapturedVideoName, Date CapturedDateTime, 
 			Machine machine) {
 		this(roomRecorded, videoID, size, length, CapturedVideoName, CapturedDateTime, null, null, null, machine);
 	}
@@ -65,10 +66,10 @@ public class Video {
 	public void setSize(double size) {
 		this.size = size;
 	}
-	public String getLength() {
+	public double getLength() {
 		return length;
 	}
-	public void setLength(String length) {
+	public void setLength(double length) {
 		this.length = length;
 	}
 	public String getCapturedVideoName() {
@@ -81,12 +82,19 @@ public class Video {
 		return CapturedDateTime;
 	}
 	public void setCapturedDateTime(Date capturedDateTime) {
-		this.CapturedDateTime = capturedDateTime;
+		//System.out.println(capturedDateTime);
+		if(capturedDateTime == null) {
+			Date newDate = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis((long)(Math.random() * 15)));
+			System.out.println(newDate);
+			this.CapturedDateTime = newDate;
+		}
+		else
+			this.CapturedDateTime = capturedDateTime;
 	}
-	public String getDateAnalysisDone() {
+	public Date getDateAnalysisDone() {
 		return DateAnalysisDone;
 	}
-	public void setDateAnalysisDone(String dateAnalysisDone) {
+	public void setDateAnalysisDone(Date dateAnalysisDone) {
 		this.DateAnalysisDone = dateAnalysisDone;
 	}
 	public String getAnalysisDirName() {

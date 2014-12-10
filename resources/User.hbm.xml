@@ -9,9 +9,9 @@
 		<id name="id" type="int" column="UserID">
 			<generator class="native" />
 		</id>
-		<property name="fname" column="Fname" type="string"/>
-		<property name="lname" column="Lname" type="string"/>
-		<property name="username" column="Username" type="string"/>
+		<property name="firstName" column="Fname" type="string"/>
+		<property name="lastName" column="Lname" type="string"/>
+		<property name="userName" column="Username" type="string"/>
 		<property name="password" column="Password" type="string"/>
 		<property name="email" column="Email" type="string"/>
 		<many-to-one name="pos" column="Role" unique="true" class="edu.iastate.cs.proj461.user.Position"/>
