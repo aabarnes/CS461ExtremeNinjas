@@ -2,37 +2,48 @@
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
- 
+
 <hibernate-configuration>
-    <session-factory>
-        <property name="connection.driver_class">
-            com.mysql.jdbc.Driver
-        </property>
-        <property name="connection.url">
-            jdbc:mysql://localhost:3306/mydb
-        </property>
-        <property name="connection.username">test</property>
-        <property name="connection.password">test</property>
-        <property name="connection.pool_size">1</property>
-        <property name="dialect">
-            org.hibernate.dialect.MySQLDialect
-        </property>
-        <property name="current_session_context_class">thread</property>
-        <property name="cache.provider_class">
-            org.hibernate.cache.NoCacheProvider
-        </property>
-        <property name="hibernate.show_sql">true</property>
-        <property name="hbm2ddl.auto">update</property>
- 
-        <mapping resource="Video.hbm.xml" />
-        <mapping resource="Machine.hbm.xml" />
-        <mapping resource="Room.hbm.xml" />
-        <!-- <mapping resource="MachineSpecValue.hbm.xml"/>
-        <mapping class="edu.iastate.cs.proj461.machine.MachineSpecValue" /> -->
-        <mapping resource="Position.hbm.xml"/>
-        <mapping resource="User.hbm.xml"/>
-        <mapping resource="MachineSoftware.hbm.xml"/>
-        
- 
-    </session-factory>
+	<session-factory>
+	
+		<property name="connection.provider_class">
+			org.jasypt.hibernate4.connectionprovider.EncryptedPasswordDriverManagerConnectionProvider
+		</property>
+		<property name="connection.encryptor_registered_name">
+			configurationHibernateEncryptor
+		</property>
+		
+		<property name="connection.driver_class">
+			com.mysql.jdbc.Driver
+		</property>
+		<property name="connection.url">
+			jdbc:mysql://localhost:3306/mydb
+		</property>
+		<property name="connection.username">test</property>
+		<property name="hibernate.connection.password">i0T4idEWFyWot2AvD8nAIQ==</property>
+		<property name="connection.pool_size">1</property>
+		<property name="dialect">
+			org.hibernate.dialect.MySQLDialect
+		</property>
+		<property name="current_session_context_class">thread</property>
+		<property name="cache.provider_class">
+			org.hibernate.cache.NoCacheProvider
+		</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hbm2ddl.auto">update</property>
+
+		<mapping resource="Video.hbm.xml" />
+		<mapping resource="Machine.hbm.xml" />
+		<mapping resource="Room.hbm.xml" />
+		 
+		<mapping resource="MachineSpecValue.hbm.xml"/>
+		<!--
+		<mapping class="edu.iastate.cs.proj461.machine.MachineSpecValue"/>
+		 -->
+		<mapping resource="Position.hbm.xml" />
+		<mapping resource="User.hbm.xml" />
+		<mapping resource="MachineSoftware.hbm.xml" />
+
+
+	</session-factory>
 </hibernate-configuration>

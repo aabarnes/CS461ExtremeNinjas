@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import javax.persistence.TemporalType;
 
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,6 +20,8 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.TimestampType;
+
+import edu.iastate.cs.proj461.room.Room;
 
 public class VideoDAOImpl implements VideoDAO{
 	
@@ -33,14 +36,14 @@ public class VideoDAOImpl implements VideoDAO{
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
 		final List<Video> results = new LinkedList<Video>();
-		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat ("yyyy-MM-dd");
 		Date startOfDay = null;
-		Date testDate = null;
-		java.sql.Date sqlDate = null;
+		//Date testDate = null;
+		//java.sql.Date sqlDate = null;
 		try {
 			startOfDay = formatter.parse(datetime);
-			testDate = formatter.parse("2014-12-07 04:16:00");
-			sqlDate = new java.sql.Date(startOfDay.getTime());
+			//testDate = formatter.parse("2014-12-07 04:16:00");
+			//sqlDate = new java.sql.Date(startOfDay.getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -73,6 +76,10 @@ public class VideoDAOImpl implements VideoDAO{
 		//results = query.list();
 		// Used for type safety
 		//for(final Object o: crit.list())
+		
+		Criteria crit = session.createCriteria(Video.class);
+		crit.add(Restrictions.ge("CapturedDateTime", startOfDay));
+		crit.add(Restrictions.le("CapturedDateTime", endOfDay));
 		for(final Object o: query.list())
 		{
 			results.add((Video) o);
@@ -182,6 +189,33 @@ public class VideoDAOImpl implements VideoDAO{
 		finally {
 			session.close();
 		}
+	}
+
+	@Override
+	public void addVideo(Video video) {
+		Session session = null;
+		Transaction tx = null;
+		Room room;
+
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			room = video.getRoom();
+			if(video.getCapturedDateTime().after(room.getLastCapture()))
+			{
+				room.setLastCapture(video.getCapturedDateTime());
+				session.update(room);
+			}
+			session.persist(video);
+			tx.commit();
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}		
 	}
 
 }

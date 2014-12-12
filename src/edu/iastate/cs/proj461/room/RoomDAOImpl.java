@@ -166,4 +166,24 @@ public class RoomDAOImpl implements RoomDAO{
         return cal.getTime();
     }
 
+	@Override
+	public void addRoom(Room room) {
+		Session session = null;
+		Transaction tx = null;
+
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			session.persist(room);
+			tx.commit();
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}		
+	}
+
 }

@@ -93,4 +93,64 @@ public class MachineDAOImpl implements MachineDAO{
 		}
 	}
 
+	@Override
+	public List<Machine> getAllMachines() {
+		Session session = null;
+		Transaction tx = null;
+
+		final List<Machine> results = new LinkedList<Machine>();
+		
+		try {
+			session = sf.openSession();
+			tx = session.beginTransaction();
+			for(final Object o: session.createCriteria(Machine.class).list())
+			{
+				results.add( (Machine) o );
+			}
+			tx.commit();
+			return results;
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	}
+	
+	public List<String> getMachineIps() {
+		Session session = null;
+		Transaction tx = null;
+
+		final List<String> results = new LinkedList<String>();
+		
+		try {
+			session = sf.openSession();
+			tx = session.beginTransaction();
+			for(final Object o: session.createCriteria(Machine.class).list())
+			{
+				results.add( ((Machine) o).getMachineIP() );
+			}
+			tx.commit();
+			return results;
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	}
+
+	@Override
+	public void addMachine(Machine machine) {
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		session.persist(machine);
+		tx.commit();
+		session.close();
+	}
+
 }

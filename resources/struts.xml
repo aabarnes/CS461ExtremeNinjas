@@ -12,10 +12,15 @@
 		<action name="login" class="edu.iastate.cs.proj461.LoginAction">
 			<result name="success">Welcome.jsp</result>
 			<result name="error">Login.jsp</result>
+			<result name="input">Login.jsp</result>
 		</action>
 		<action name="logout" class="edu.iastate.cs.proj461.LoginAction" method="logout">
 			<result name="success">Login.jsp</result>
 			<result name="error">Welcome.jsp</result>
+		</action>
+		
+		<action name="GenerateData" class="edu.iastate.cs.proj461.test.GenerateDummyData" method="generateData">
+		
 		</action>
 	</package>
 	<package name="search" namespace="/search" extends="json-default">
@@ -31,6 +36,12 @@
 		<action name="ListRoomsAction" class="edu.iastate.cs.proj461.room.RoomSearchAction" method="getRoomNames">
 			<result type="json">
 				<param name="ignoreHierarchy">false</param>
+				<param name="root">returnObj</param>
+			</result>
+		</action>
+		
+		<action name="ListMachineIPsAction" class="edu.iastate.cs.proj461.machine.MachineSearchAction" method="getMachineIps">
+			<result type="json">
 				<param name="root">returnObj</param>
 			</result>
 		</action>

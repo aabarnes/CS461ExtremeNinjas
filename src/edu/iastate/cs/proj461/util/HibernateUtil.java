@@ -33,23 +33,49 @@ public class HibernateUtil {
 */
 
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.ServiceRegistryBuilder;
+import org.jasypt.encryption.pbe.PBEStringEncryptor;
+import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
+import org.jasypt.hibernate4.encryptor.HibernatePBEEncryptorRegistry;
  
 public class HibernateUtil {
     private static SessionFactory sessionFactory;
+    
+    public static synchronized void initSessionFactory() {
+    	if(sessionFactory != null) {
+    		throw new IllegalStateException("Hibernate SessionFactory has already been initialized");
+    	}
+    	try {
+            // loads configuration and mappings
+            Configuration configuration = new Configuration().configure();
+            System.out.println("Hibernate Configuration loaded");
+            
+    		HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
+
+            PBEStringEncryptor encryptor = registry.getPBEStringEncryptor("configurationHibernateEncryptor");
+            encryptor.setPassword("proj461");
+            System.out.println(configuration.getProperty("hibernate.connection.password"));
+            configuration.setProperty("hibernate.connection.password", encryptor.decrypt(configuration.getProperty("hibernate.connection.password")));
+            System.out.println(configuration.getProperty("hibernate.connection.password"));
+            
+            ServiceRegistry serviceRegistry
+                = new ServiceRegistryBuilder()
+                    .applySettings(configuration.getProperties()).buildServiceRegistry();
+            System.out.println("Hibernate serviceRegistry created");
+            
+             // builds a session factory from the service registry
+            sessionFactory = configuration.buildSessionFactory(serviceRegistry);  
+    	} catch(Exception ex) {
+    		ex.printStackTrace();
+    		throw new ExceptionInInitializerError(ex);
+    	}
+    }
      
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
-            // loads configuration and mappings
-            Configuration configuration = new Configuration().configure();
-            ServiceRegistry serviceRegistry
-                = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties()).build();
-             
-            // builds a session factory from the service registry
-            sessionFactory = configuration.buildSessionFactory(serviceRegistry);           
+    		throw new IllegalStateException("Hibernate SessionFactory has not been initialized");
         }
          
         return sessionFactory;

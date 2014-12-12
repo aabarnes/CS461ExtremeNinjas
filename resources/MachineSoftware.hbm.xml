@@ -6,7 +6,7 @@
 <hibernate-mapping>
 
 	<class name="edu.iastate.cs.proj461.machine.MachineSoftware" table="MachineSoftware">
-		<id name="code" type="int" column="Cod">
+		<id name="code" type="int" column="Code">
 			<generator class="native" />
 		</id>
 		<property name="description" column="Description" type="string"/>

@@ -1,8 +1,6 @@
 package edu.iastate.cs.proj461.test;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +8,33 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import edu.iastate.cs.proj461.machine.Machine;
+import edu.iastate.cs.proj461.machine.MachineDAO;
+import edu.iastate.cs.proj461.machine.MachineDAOImpl;
+import edu.iastate.cs.proj461.machine.MachineSoftware;
+import edu.iastate.cs.proj461.machine.MachineSoftwareDAO;
+import edu.iastate.cs.proj461.machine.MachineSoftwareDAOImpl;
+import edu.iastate.cs.proj461.machine.MachineSpecValue;
+import edu.iastate.cs.proj461.machine.MachineSpecValueDAO;
+import edu.iastate.cs.proj461.machine.MachineSpecValueDAOImpl;
+import edu.iastate.cs.proj461.machine.MachineSpecValuePK;
+import edu.iastate.cs.proj461.room.Room;
+import edu.iastate.cs.proj461.room.RoomDAO;
+import edu.iastate.cs.proj461.room.RoomDAOImpl;
+import edu.iastate.cs.proj461.user.Position;
+import edu.iastate.cs.proj461.user.PositionDAO;
+import edu.iastate.cs.proj461.user.PositionDAOImpl;
+import edu.iastate.cs.proj461.user.User;
+import edu.iastate.cs.proj461.user.UserDAO;
+import edu.iastate.cs.proj461.user.UserDAOImpl;
+import edu.iastate.cs.proj461.util.HibernateUtil;
+import edu.iastate.cs.proj461.video.Video;
+import edu.iastate.cs.proj461.video.VideoDAO;
+import edu.iastate.cs.proj461.video.VideoDAOImpl;
 
 public class GenerateDummyData {
 	// JDBC driver name and database URL
@@ -35,31 +58,36 @@ public class GenerateDummyData {
 		DOWN
 	}
 
-	public static void main(String[] args) {
+	public static void generateData() {
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			conn.setAutoCommit(false);
+			//Class.forName("com.mysql.jdbc.Driver");
+			//conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			//conn.setAutoCommit(false);
 
 			ipAddresses = new ArrayList<String>(numMachines);
 			roomMachine = new LinkedHashMap<Integer, Integer>();
+						
 			// machine
 			GenerateDummyMachines();
+			
 			// machine software
 			GenerateDummySoftware();
+			
 			// machine spec values
 			GenerateMachineSpecs();
+			
 			// positions
 			GeneratePositions();
+			
 			// user
 			GenerateUsers();
+			
 			// room
 			GenerateRooms();
+			
 			// video
 			GenerateVideos();
 			
-		} catch (SQLException se) {
-			se.printStackTrace();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -75,144 +103,133 @@ public class GenerateDummyData {
 
 	private static void GenerateDummyMachines() {
 		Random random = new Random();
-		try {
-				PreparedStatement psmt = conn.prepareStatement("INSERT INTO machine VALUES (?, ?, ?, ?, ?)");
-				for(int i = 0; i < numMachines; i++) {
-					State state1 = State.values()[random.nextInt(State.values().length)];
-					State state2 = State.values()[random.nextInt(State.values().length)];
-					State state3 = State.values()[random.nextInt(State.values().length)];
-					psmt.setInt(1, i);
-					psmt.setString(2, generateRandomIP());
-					psmt.setString(3, state1.name());
-					psmt.setString(4, state2.name());
-					psmt.setString(5, state3.name());
-					psmt.executeUpdate();
-					conn.commit();
-				}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
+
+		for(int i = 0; i < numMachines; i++) {
+			
+			Machine machine = new Machine();
+			machine.setMachineIP(generateRandomIP());
+			machine.setCaptureState(State.values()[random.nextInt(State.values().length)].name());
+			machine.setDiskState(State.values()[random.nextInt(State.values().length)].name());
+			machine.setMachineState(State.values()[random.nextInt(State.values().length)].name());
+			
+			machineDAO.addMachine(machine);
 		}
 	}
 	
 	private static void GenerateDummySoftware() {
-		Random random = new Random();
 		String list = "Remaining Disk Space (in GBs)";
-		try {
-				PreparedStatement psmt = conn.prepareStatement("INSERT INTO machinesoftware VALUES (?, ?)");
-				for(int i = 0; i < 1; i++) {
-					psmt.setInt(1, i);
-					psmt.setString(2, list);
-					psmt.executeUpdate();
-					conn.commit();
-				}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		MachineSoftwareDAO machineSoftwareDAO = new MachineSoftwareDAOImpl(HibernateUtil.getSessionFactory());
+		for(MachineSoftware machineSoftware : machineSoftwareDAO.getAllSoftwareCodes())
+		{
+			if(machineSoftware.getDescription().equals(list))
+				return;
+		}
+		for(int i = 0; i < 1; i++) {
+			MachineSoftware machineSoftware = new MachineSoftware();
+			machineSoftware.setDescription(list);
+			machineSoftwareDAO.addMachineSoftware(machineSoftware);
 		}
 	}
 	
 	private static void GenerateMachineSpecs() {
 		Random random = new Random();
 		List<Integer> machines = new ArrayList<Integer>(numMachines);
-		try {
-				PreparedStatement psmt = conn.prepareStatement("INSERT INTO machinespecvalues VALUES (?, ?, ?)");
-				for(int i = 0; i < numMachines; i++) {
-					psmt.setInt(1, 0);
-					int temp;
-					do {
-						temp = random.nextInt(numMachines);
-					} while(machines.contains(temp));
-					machines.add(temp);
-					psmt.setInt(2, temp);
-					psmt.setString(3, "250");
-					psmt.executeUpdate();
-					conn.commit();
-				}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		MachineSpecValueDAO machineSpecValueDAO = new MachineSpecValueDAOImpl(HibernateUtil.getSessionFactory());
+		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
+		MachineSoftwareDAO machineSoftwareDAO = new MachineSoftwareDAOImpl(HibernateUtil.getSessionFactory());
+		for(int i = 0; i < numMachines; i++) {
+			MachineSpecValue machineSpecValue = new MachineSpecValue();
+			int temp;
+			do {
+				temp = random.nextInt(numMachines);
+			} while(machines.contains(temp));
+			machines.add(temp);
+			MachineSoftware machineSoftware = machineSoftwareDAO.getMachineSoftwareById(1);
+			Machine machine = machineDAO.getMachineInfo(temp+1);
+			machineSpecValue.setMachineSpecValueId(new MachineSpecValuePK(machine, machineSoftware));
+			machineSpecValue.setValue("250");
+			machineSpecValueDAO.updateMachineSpecValue(machineSpecValue);
 		}
 	}
 	
 	private static void GeneratePositions() {
-		try {
-			PreparedStatement psmt = conn.prepareStatement("INSERT INTO positions VALUES (?, ?)");
-			for(int i = 0; i < 1; i++) {
-				psmt.setInt(1, i);
-				psmt.setString(2, "CEO");
-				psmt.executeUpdate();
-				conn.commit();
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		PositionDAO positionDAO = new PositionDAOImpl(HibernateUtil.getSessionFactory());
+		for(int i = 0; i < 1; i++) {
+			Position position = new Position();
+			position.setTitle("CEO");
+			positionDAO.addPostion(position);
 		}
 	}
 	
 	private static void GenerateUsers() {
 		Random random = new Random();
-
-		try {
-			PreparedStatement psmt = conn.prepareStatement("INSERT INTO user VALUES (?, ?, ?, ?, ?, ?, ?)");
-			for(int i = 0; i < numUsers; i++) {
-				psmt.setInt(1, i);
-				psmt.setString(2, RandomStringUtils.random(random.nextInt(10) + 1, true, false));
-				psmt.setString(3, RandomStringUtils.random(random.nextInt(10) + 1, true, false));
-				psmt.setString(4, RandomStringUtils.random(random.nextInt(10) + 1, true, true));
-				psmt.setString(5, RandomStringUtils.random(random.nextInt(10) + 1, true, true));
-				psmt.setString(6, RandomStringUtils.random(random.nextInt(10) + 1, true, true));
-				psmt.setInt(7, 0);
-				psmt.executeUpdate();
-				conn.commit();
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
+		PositionDAO positionDAO = new PositionDAOImpl(HibernateUtil.getSessionFactory());
+		for(int i = 0; i < numUsers; i++) {
+			User user = new User();
+			user.setFirstName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setLastName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setUserName(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
+			user.setPassword(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
+			user.setEmail(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
+			Position position = positionDAO.getPositionById(1);
+			user.setPos(position);
+			userDAO.addUser(user);
 		}
 	}
 	
 	private static void GenerateRooms() {
 		List<Integer> machines = new ArrayList<Integer>(numMachines);
 		Random random = new Random();
-		try {
-			PreparedStatement psmt = conn.prepareStatement("INSERT INTO room VALUES (?, ?, ?, ?)");
-			for(int i = 0; i < numMachines; i++) {
-				psmt.setInt(1, i);
-				psmt.setString(2, RandomStringUtils.random((int)(Math.random() * 5) + 5, true, false));
-				psmt.setString(3, "2014-12-07 03:16:00");
-				int temp;
-				do {
-					temp = random.nextInt(numMachines);
-				} while(machines.contains(temp));
-				machines.add(temp);
-				psmt.setInt(4, temp);
-				roomMachine.put(i, temp);
-				psmt.executeUpdate();
-				conn.commit();
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		RoomDAO roomDAO = new RoomDAOImpl(HibernateUtil.getSessionFactory());
+		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
+
+		for(int i = 0; i < numMachines; i++) {
+			Room room = new Room();
+			room.setName(RandomStringUtils.random((int)(Math.random() * 5) + 5, true, false));
+			room.setLastCapture(new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(30)));
+			int temp;
+			do {
+				temp = random.nextInt(numMachines) + 1;
+			} while(machines.contains(temp));
+			machines.add(temp);
+			Machine machine = machineDAO.getMachineInfo(temp);
+			if(machine == null)
+				System.out.println("Machine null at id: " + temp);
+			room.setMachine(machine);
+			roomMachine.put(i+1, temp);
+			roomDAO.addRoom(room);
 		}
 	}
 	
 	private static void GenerateVideos() {
 		Random random = new Random();
-		try {
-			PreparedStatement psmt = conn.prepareStatement("INSERT INTO video VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-			for(int i = 0; i < numUsers * 10; i++) {
-				psmt.setInt(1, i);
-				psmt.setString(2, RandomStringUtils.random(15, true, true));
-				psmt.setString(3, "2014-12-07");
-				psmt.setString(4, "2014-12-07");
-				psmt.setString(5, RandomStringUtils.random(15, true, true));
-				psmt.setString(6, RandomStringUtils.random(15, true, true));
-				int temp = random.nextInt(numMachines);
-				psmt.setDouble(7, temp);
-				psmt.setDouble(8, (int)(Math.random() * 1024));
-				psmt.setDouble(9, (int)(Math.random() * 1024));
-				psmt.setDouble(10, roomMachine.get(temp));
+		VideoDAO videoDAO = new VideoDAOImpl(HibernateUtil.getSessionFactory());
+		RoomDAO roomDAO = new RoomDAOImpl(HibernateUtil.getSessionFactory());
+		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
 
-				psmt.executeUpdate();
-				conn.commit();
-			}
-		} catch (SQLException se) {
-			se.printStackTrace();
+		for(int i = 0; i < numUsers * 10; i++) {
+			Video video = new Video();
+			video.setCapturedVideoName(RandomStringUtils.random(15, true, true));
+			int numDaysBackCapture = random.nextInt(15);
+			video.setCapturedDateTime(new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(numDaysBackCapture)));
+			int analysisDay;
+			do {
+				analysisDay = random.nextInt(15);
+			} while(analysisDay > numDaysBackCapture);
+			video.setDateAnalysisDone(new Date(new Date().getTime() - TimeUnit.DAYS.toMillis(analysisDay)));
+			video.setUploadedFileName(RandomStringUtils.random(15, true, true));
+			video.setAnalysisDirName(RandomStringUtils.random(15, true, true));
+			Room room = roomDAO.findRoomById(random.nextInt(numMachines)+1);
+			video.setRoom(room);
+			video.setSize((int)(Math.random() * 1024));
+			video.setLength((int)(Math.random() * 1024));
+			Machine machine = machineDAO.getMachineInfo(roomMachine.get(room.getRoomID()));
+			if(machine == null)
+				System.out.println("Machine null with id: " + roomMachine.get(room.getRoomID()));
+			video.setMachine(machine);
+			videoDAO.addVideo(video);
 		}
 	}
 

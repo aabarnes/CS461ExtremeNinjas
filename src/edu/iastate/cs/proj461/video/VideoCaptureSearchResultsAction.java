@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.struts2.interceptor.SessionAware;
+import org.hibernate.Hibernate;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -29,6 +30,9 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 	
 	private SessionMap<String, Object> sessionMap;
 	
+	private String datetime = null;
+	private String roomIDString = null;
+	
 	@Override
 	public String execute() {
 		
@@ -38,19 +42,27 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 		
 		//Fetch data from database here
 		//	Cast to corresponding class
-		String fromJSP = (String) request.getAttribute("datetime");
-		System.out.println(fromJSP);
-		String datetime = (String) request.getAttribute("datetime");
+		
+		//String fromJSP = (String) request.getAttribute("datetime");
+		//System.out.println(fromJSP);
+		//String datetime = (String) request.getAttribute("datetime");
 		if(datetime == null) {
+			System.out.println(datetime);
 			//dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 			//datetime = (new Date().toString());
 			datetime = "2014-12-07";
 		}
-		int roomID = (int) request.getAttribute("room");
+		//int roomID = (int) request.getAttribute("room");
+		int roomID = Integer.parseInt(roomIDString);
+		System.out.println(roomID);
+		
 		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTimeAndRoom(datetime, roomID);
+		//resultList = (List<Video>) videoDAO.findAllVideos();
 		
 		//Assign fetched data to return object here
+		returnObj = new DatatableObject();
 		returnObj.setData(resultList);
+		Hibernate.initialize(returnObj);
 				
 		return Action.SUCCESS;
 	}
@@ -84,8 +96,40 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 		this.returnObj = returnObj;
 	}
 
+	public HttpServletRequest getRequest() {
+		return request;
+	}
+
+	public void setRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+
+	public SessionMap<String, Object> getSessionMap() {
+		return sessionMap;
+	}
+
+	public void setSessionMap(SessionMap<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
+	}
+
 	@Override
 	public void setSession(Map<String, Object> map) {
 		sessionMap = (SessionMap<String, Object>) map;		
+	}
+
+	public String getDatetime() {
+		return datetime;
+	}
+
+	public void setDatetime(String datetime) {
+		this.datetime = datetime;
+	}
+
+	public String getRoomIDString() {
+		return roomIDString;
+	}
+
+	public void setRoomIDString(String roomIDString) {
+		this.roomIDString = roomIDString;
 	}
 }

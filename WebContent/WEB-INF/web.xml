@@ -16,5 +16,11 @@
     <welcome-file-list>
         <welcome-file>Login.jsp</welcome-file>
     </welcome-file-list>
+    
+    <listener>
+    <listener-class>
+	  edu.iastate.cs.proj461.util.HibernateContextListener
+    </listener-class>
+  </listener>
  
 </web-app>

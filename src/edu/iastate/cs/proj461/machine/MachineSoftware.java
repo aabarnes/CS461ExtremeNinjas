@@ -5,6 +5,10 @@ public class MachineSoftware {
 	private int code;
 	private String description;
 	
+	public MachineSoftware() {
+		
+	}
+	
 	public MachineSoftware(int code, String description){
 		this.code = code;
 		this.description = description;

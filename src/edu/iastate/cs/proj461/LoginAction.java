@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.SessionAware;
+import org.jasypt.util.password.StrongPasswordEncryptor;
 
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -21,22 +22,26 @@ public class LoginAction extends ActionSupport implements SessionAware{
     
     private SessionMap<String, Object> sessionMap;
     
-    //private User user = new User();
+    private User user;
  
+    @Override
     public String execute() {
- 
-		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
-		User userDB = userDAO.getUserByCredentials(username, password);
-		if(userDB == null) {
-			System.out.println("UserDB is null");
-			return Action.ERROR;
-		}
-			
-		else {
-			sessionMap.put("username", username);
-			return Action.SUCCESS;
-		}
+		return Action.SUCCESS;
     }
+	
+	@Override
+	public void validate() {
+		/*
+		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+		user = userDAO.getUserByUsername(username);
+		if(user != null && passwordEncryptor.checkPassword(password, user.getPassword()))
+			sessionMap.put("username", username);
+		else {
+			addActionError("Incorrect Username/Password.");
+		}
+		*/
+	}
 
 	@Override
 	public void setSession(Map<String, Object> map) {

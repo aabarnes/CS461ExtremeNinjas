@@ -6,9 +6,9 @@
 <hibernate-mapping>
 
 	<class name="edu.iastate.cs.proj461.machine.MachineSpecValue" table="MachineSpecValues">
-		<composite-id>
-			<key-property name="softwareCode" column="Code"/>
-			<key-property name="machineID" column="MachineID"/>
+		<composite-id name="machineSpecValueId" class="edu.iastate.cs.proj461.machine.MachineSpecValuePK">
+			<key-many-to-one name="code" class="edu.iastate.cs.proj461.machine.MachineSoftware" column="Code"/>
+			<key-many-to-one name="machine" class="edu.iastate.cs.proj461.machine.Machine" column="MachineID"/>
 		<!-- 
 			<key-many-to-one name="software" column="Code" class="edu.iastate.cs.proj461.machine.MachineSoftware"/>
 			<key-many-to-one name="machine" column="MachineID" class="edu.iastate.cs.proj461.machine.Machine"/>
@@ -16,6 +16,7 @@
 		</composite-id>
 		<property name="value" column="Value" type="string"/>
 		
+		<!-- 
 		<many-to-one name="machineID" class="edu.iastate.cs.proj461.machine.Machine"
 			insert="false"
 			update="false">
@@ -27,6 +28,7 @@
 			insert="false"
 			update="false"
 			column="Code" />
+			 -->
 	</class>
 
 </hibernate-mapping>

@@ -3,7 +3,9 @@ package edu.iastate.cs.proj461.test;
 import java.util.Date;
 import java.util.List;
 
+import edu.iastate.cs.proj461.machine.Machine;
 import edu.iastate.cs.proj461.machine.MachineDAO;
+import edu.iastate.cs.proj461.machine.MachineDAOImpl;
 import edu.iastate.cs.proj461.user.User;
 import edu.iastate.cs.proj461.user.UserDAO;
 import edu.iastate.cs.proj461.user.UserDAOImpl;
@@ -17,9 +19,11 @@ public class HibernateTest {
 	public static void main(String[] args) {
 		VideoDAO videoDAO = new VideoDAOImpl(HibernateUtil.getSessionFactory());
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
+		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
 
 		getVideos(videoDAO);
 		getUsers(userDAO);
+		getMachines(machineDAO);
 		/*
 		Date date = new Date();
 		
@@ -55,7 +59,12 @@ public class HibernateTest {
 	}
 	
 	public static void getMachines(MachineDAO machineDAO) {
-		
+		List<Machine> results = machineDAO.getAllMachines();
+		for(Machine machine: results) {
+			System.out.println("Id: " + machine.getId());
+			System.out.println("IP Address: " + machine.getMachineIP());
+			System.out.println("State: " + machine.getMachineState() + "\n");
+		}
 	}
 
 	//Fetch data from database here

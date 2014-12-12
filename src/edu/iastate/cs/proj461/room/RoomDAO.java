@@ -4,10 +4,11 @@ import java.util.List;
 
 public interface RoomDAO {
 	
-	Room findRoomById(int id);
-	Room findRoomByName(String name);
-	List<Room> findRoomsByName(String name);
-	List<String> listRoomNames();
-	List<Room> findIdleRooms(int withinNumDays);
+	public Room findRoomById(int id);
+	public Room findRoomByName(String name);
+	public List<Room> findRoomsByName(String name);
+	public List<String> listRoomNames();
+	public List<Room> findIdleRooms(int withinNumDays);
+	public void addRoom(Room room);
 
 }

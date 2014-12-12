@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript">
-	function loadRoomNames() {
+	$(function loadRoomNames() {
 		$.post("search/ListRoomsAction.action",
 				function(response, status, jqXHR) {
 					if (status == "error") {
@@ -25,7 +25,7 @@
 						});
 					}
 				});
-	}
+	});
 
 	$("#dateInput").change(function() {
 		$("#roomSelectInput").css('visibility', 'visible');
@@ -44,7 +44,7 @@
 
 	$(document).ready(function() {
 		$("#dateInput").val(new Date().toDateInputValue());
-		loadRoomNames();
+		<%-- loadRoomNames(); --%>
 	});
 	
 	Date.prototype.toDateInputValue = (function() {
@@ -64,7 +64,7 @@
 		action="VideoCaptureSearchResults.jsp">
 		Find: <input type="date" name="dateInput" id="dateInput" />
 		<select
-			name="roomSelect" id="roomSelectInput">
+			name="roomSelect" id="roomSelectInput" >
 			<option id="all" value="All">All</option>
 		</select>
 	</form>

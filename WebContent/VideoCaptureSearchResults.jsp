@@ -19,50 +19,32 @@
 <script>
 
 $(document).ready( function () {
-    $('#table_id').DataTable( {
+    $('#video_capture_search_table_id').DataTable( {
 		"ajax": {
 			"url": "search/VideoCaptureSearchResultsAction.action",
 			"data":  {
 					"datetime": getParameterByName("date"),
-					"room": getParameterByName("room"),
+					"roomIDString": getParameterByName("room")
 					
 				}
 			},
 		"columns": [
-		  {		"data"	: "VideoID" 			},
-		  {		"data"	: "CapturedVideoName" 	},
-		  { 	"data"	: "CapturedDateTime" 	},
-		  { 	"data"	: "DateAnalysisDone" 	},
-		  { 	"data"	: "Length" 				},
-		  { 	"data"	: "Size" 				},
-		  { 	"data"	: "MachineIP" 			},
-		  { 	"data"	: "AnalysisDirName" 	},
-		  { 	"data"	: "RoomID" 				},
-		  { 	"data"	: "UploadedFileName" 	}
-		]<%--,
-		initComplete: function () {
-            var api = this.api();
- 
-            api.columns().indexes().flatten().each( function ( i ) {
-                var column = api.column( i );
-                var select = $('<select><option value=""></option></select>')
-                    .appendTo( $(column.footer()).empty() )
-                    .on( 'change', function () {
-                        var val = $.fn.dataTable.util.escapeRegex(
-                            $(this).val()
-                        );
- 
-                        column
-                            .search( val ? '^'+val+'$' : '', true, false )
-                            .draw();
-                    } );
- 
-                column.data().unique().sort().each( function ( d, j ) {
-                    select.append( '<option value="'+d+'">'+d+'</option>' )
-                } );
-            } );
-        }--%>,
-        "oTableTools": {
+		  {		"data"	: "videoID" 			},
+		  {		"data"	: "capturedVideoName" 	},
+		  { 	"data"	: "room.roomID" 		},
+
+		  { 	"data"	: "capturedDateTime" 	},
+		  
+		  { 	"data"	: "dateAnalysisDone" 	},
+		  { 	"data"	: "length" 				},
+		  { 	"data"	: "size" 				},
+		  { 	"data"	: "machine.machineIP" 	},
+
+		  { 	"data"	: "analysisDirName" 	},
+
+		  { 	"data"	: "uploadedFileName" 	}
+		],
+		"oTableTools": {
         	"sSwfPath": "media/copy_csv_xls_pdf.swf"
         }
 	} );

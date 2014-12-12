@@ -4,8 +4,9 @@ import java.util.List;
 
 public interface VideoDAO {
 
-	List<Video> findVideoByCapturedDateTime(String datetime);
-	List<Video> findVideoByCapturedDateTimeRange(String datetime, long range);
-	List<Video> findVideoByCapturedDateTimeAndRoom(String datetime, int roomID);
+	public List<Video> findVideoByCapturedDateTime(String datetime);
+	public List<Video> findVideoByCapturedDateTimeRange(String datetime, long range);
+	public List<Video> findVideoByCapturedDateTimeAndRoom(String datetime, int roomID);
 	public List<Video> findAllVideos();
+	public void addVideo(Video video);
 }

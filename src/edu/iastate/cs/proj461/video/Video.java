@@ -82,10 +82,8 @@ public class Video {
 		return CapturedDateTime;
 	}
 	public void setCapturedDateTime(Date capturedDateTime) {
-		//System.out.println(capturedDateTime);
 		if(capturedDateTime == null) {
 			Date newDate = new Date(new Date().getTime() - TimeUnit.DAYS.toMillis((long)(Math.random() * 15)));
-			System.out.println(newDate);
 			this.CapturedDateTime = newDate;
 		}
 		else
