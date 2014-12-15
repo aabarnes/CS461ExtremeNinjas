@@ -21,6 +21,7 @@
 		</property>
 		<property name="connection.username">test</property>
 		<property name="hibernate.connection.password">i0T4idEWFyWot2AvD8nAIQ==</property>
+		<!--  <property name="hibernate.connection.password">test</property> -->
 		<property name="connection.pool_size">1</property>
 		<property name="dialect">
 			org.hibernate.dialect.MySQLDialect
@@ -43,6 +44,7 @@
 		<mapping resource="Position.hbm.xml" />
 		<mapping resource="User.hbm.xml" />
 		<mapping resource="MachineSoftware.hbm.xml" />
+		<mapping resource="Disk.hbm.xml" />
 
 
 	</session-factory>
