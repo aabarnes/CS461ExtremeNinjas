@@ -47,5 +47,9 @@ public class Disk {
 	public void setDiskId(int diskId){
 		diskPK.setDiskId(diskId);
 	}
+	
+	public int getMachineId(){
+		return this.diskPK.getMachine().getId();
+	}
 
 }
