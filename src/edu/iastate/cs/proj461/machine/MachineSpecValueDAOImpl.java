@@ -1,8 +1,13 @@
 package edu.iastate.cs.proj461.machine;
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+
+import edu.iastate.cs.proj461.disk.Disk;
 
 public class MachineSpecValueDAOImpl implements MachineSpecValueDAO{
 	
@@ -38,6 +43,20 @@ public class MachineSpecValueDAOImpl implements MachineSpecValueDAO{
 		session.saveOrUpdate(machineSpecValue);
 		tx.commit();
 		session.close();		
+	}
+
+	@Override
+	public List<MachineSpecValue> getSoftwareForMachine(String ipAddress) {
+		Session session = sf.openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("from MachineSpecValue specValue where specValue.machineSpecValuePK.machine.machineIP = :ipAddress");
+		query.setParameter("ipAddress", ipAddress);
+		//new Disk().getDiskPK().getDiskId()
+		List<MachineSpecValue> results = query.list();
+				 
+		tx.commit();
+		session.close();
+		return results;
 	}
 
 }
