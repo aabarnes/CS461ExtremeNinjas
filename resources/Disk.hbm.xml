@@ -6,7 +6,7 @@
 <hibernate-mapping>
 
 	<class name="edu.iastate.cs.proj461.disk.Disk" table="Disk">
-		<composite-id name="diskId" class="edu.iastate.cs.proj461.disk.DiskPK">
+		<composite-id name="diskPK" class="edu.iastate.cs.proj461.disk.DiskPK">
 			<key-many-to-one name="machine" class="edu.iastate.cs.proj461.machine.Machine" column="MachineID"/>
 			<key-property name="diskId" column="DiskID" />		
 		</composite-id>
