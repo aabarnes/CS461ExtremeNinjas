@@ -32,12 +32,13 @@ public class HibernateUtil {
 }
 */
 
+import org.hibernate.Hibernate;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.proxy.HibernateProxy;
 import org.hibernate.service.ServiceRegistry;
 import org.hibernate.service.ServiceRegistryBuilder;
 import org.jasypt.encryption.pbe.PBEStringEncryptor;
-import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 import org.jasypt.hibernate4.encryptor.HibernatePBEEncryptorRegistry;
  
 public class HibernateUtil {
@@ -55,7 +56,6 @@ public class HibernateUtil {
     		HibernatePBEEncryptorRegistry registry = HibernatePBEEncryptorRegistry.getInstance();
 
             PBEStringEncryptor encryptor = registry.getPBEStringEncryptor("configurationHibernateEncryptor");
-            encryptor.setPassword("proj461");
             System.out.println(configuration.getProperty("hibernate.connection.password"));
             configuration.setProperty("hibernate.connection.password", encryptor.decrypt(configuration.getProperty("hibernate.connection.password")));
             System.out.println(configuration.getProperty("hibernate.connection.password"));
