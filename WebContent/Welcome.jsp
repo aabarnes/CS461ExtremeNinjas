@@ -43,8 +43,9 @@
     <sj:tabbedpanel id="remotetabs" selectedTab="1" show="true" hide="'fade'" >
         <sj:tab id="tab1" href="/Login.jsp" label="Logout"/>
         <sj:tab id="tab2" href="VideoCaptureSearch.jsp" label="Video Search"/>
-        <sj:tab id="tab3" href="MachineSearch.jsp" label="Machine Search"/>
-        <sj:tab id="tab4" href="GenerateData" label="Generate Data"/>
+        <sj:tab id="tab3" href="RoomUtilization.jsp" label="Room Usage"/>
+        <sj:tab id="tab4" href="MachineSearch.jsp" label="Machine Search"/>
+        <sj:tab id="tab5" href="GenerateData" label="Generate Data"/>
     </sj:tabbedpanel>
 </body>
 </html>

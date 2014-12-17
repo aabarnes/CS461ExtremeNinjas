@@ -20,7 +20,7 @@
 	$(document).ready(function () {
 		$('#jqChart').jqChart({
 	        title: { text: 'Room Video Capture Schedule' },
-	        legend: { location: 'top' },
+	        legend: { visible: false },
 	        animation: { duration: .5 },
 	        shadows: {
 	            enabled: true
@@ -37,10 +37,9 @@
 	        }, series: [
 	            {
 	                type: 'gantt',
-	                title: 'videos',
 	                fillStyle: '#418CF0',
 	            	data: [
-	            		['Room 1', new Date(2010, 0, 1), new Date(2010, 0, 20)],
+	            		['Room 1', new Date(2010, 0, 1, 3, 45, 32, 4), new Date(2010, 0, 20, 5, 3, 14, 56)],
 	            		['Room 2', new Date(2010, 0, 21), new Date(2010, 1, 15)],
 	            		['Room 3', new Date(2010, 1, 16), new Date(2010, 1, 28)],
 	            		['Room 4', new Date(2010, 2, 1), new Date(2010, 2, 20)],
@@ -55,25 +54,20 @@
 	            }
 	        ]
 	    });
-/*	    
-	    $('#compare_selector').on('click', '.compare_button', function() {
-	        if ($(this).hasClass("selected")) {
-	            return false;
-	        }
-	        $('.compare_button').each(function() {
-	            $(this).removeClass("selected");
-	        });
-	        $(this).addClass("selected");
-	        if ($(this).html().indexOf("similar") > -1) {
-	            // get current series
-	            // get the data from the first series
-	            $('#roomgraph_container').jqChart('option', 'series')[0].data = allData
-	            // update (redraw) the chart
-	            $('#roomgraph_container').jqChart('update');
-	        }
-	        return false;
-	    });
-	    */
+		
+		 // get current series
+        var series = $('#jqChart').jqChart('option', 'series')
+
+        // get the data from the first series
+        var data = series[0].data
+
+        for(i = 0; i < 1; i++) {
+        	// add new data item
+			data.push(['Room 6', new Date(2010, 1, 16), new Date(2010, 1, 20)]);
+        }
+
+        // update (redraw) the chart
+        $('#jqChart').jqChart('update');
 	});
 </script>
 </head>
