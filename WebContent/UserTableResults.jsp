@@ -20,15 +20,9 @@
 <script>
 
 $(document).ready( function () {
-    var table = $('#video_capture_search_table_id').DataTable( {
+    var table = $('#users_table_id').DataTable( {
 		"ajax": {
-			"url": "search/VideoCaptureSearchResultsAction.action",
-			"data":  {
-					"datetime": date,
-					"roomIDString": room
-					<%--"datetime": getParameterByName("date"),
-					"roomIDString": getParameterByName("room")--%>
-				}
+			"url": "search/ListUsersAction.action",
 			},
 		"columns": [
 		  {		"data"	: "id" 			},
@@ -65,7 +59,7 @@ $(document).ready( function () {
 			<s:actionerror />
 		</div>
 	</s:if>
-	<table id="video_capture_search_table_id" class="display">
+	<table id="users_table_id" class="display">
 		<thead>
 			<tr>
 				<th>User ID</th>
