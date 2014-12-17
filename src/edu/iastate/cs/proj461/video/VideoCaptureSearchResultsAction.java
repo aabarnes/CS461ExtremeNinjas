@@ -1,6 +1,7 @@
 package edu.iastate.cs.proj461.video;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import edu.iastate.cs.proj461.DatatableObject;
 import edu.iastate.cs.proj461.user.Position;
+import edu.iastate.cs.proj461.user.User;
 import edu.iastate.cs.proj461.user.UserDAO;
 import edu.iastate.cs.proj461.user.UserDAOImpl;
 import edu.iastate.cs.proj461.util.HibernateUtil;
@@ -36,7 +38,7 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 	@Override
 	public String execute() {
 		
-		List<Video> resultList;
+		List<Video> resultList = null;
 		SimpleDateFormat dateFormat;
 		VideoDAO videoDAO = new VideoDAOImpl(HibernateUtil.getSessionFactory());
 		
@@ -53,39 +55,55 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 			datetime = "2014-12-07";
 		}
 		//int roomID = (int) request.getAttribute("room");
-		int roomID = Integer.parseInt(roomIDString);
-		System.out.println(roomID);
+		int roomID = -1;
+		if("All".equals(roomIDString));
+		else if("".equals(roomIDString));
+		else if(roomIDString == null);
+		else
+			roomID = Integer.parseInt(roomIDString);
 		
 		resultList = (List<Video>) videoDAO.findVideoByCapturedDateTimeAndRoom(datetime, roomID);
+		//Hibernate.initialize(resultList);
+
 		//resultList = (List<Video>) videoDAO.findAllVideos();
+		/*
+		System.out.println(resultList.size());
+		int count = 0;
+		for(Video video : resultList) {
+			System.out.println(count++ + ": " + video.getCapturedVideoName() + "\t\t" + video.getRoom().getRoomID() + "\t\t" + video.getMachine().getId());
+		}
+		*/
 		
 		//Assign fetched data to return object here
 		returnObj = new DatatableObject();
-		returnObj.setData(resultList);
+		if(resultList.size() > 0) {
+			Hibernate.initialize(resultList);
+			returnObj.setData(resultList);
+		}
+		else
+			returnObj.setData(new ArrayList<Video>());
 		Hibernate.initialize(returnObj);
-				
+		
 		return Action.SUCCESS;
 	}
 	
 	@Override
 	public void validate() {
-		/*
-		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
-		String username = (String) sessionMap.get("username");
-		int positionID = -1;
-		if(username != null)
-			positionID = userDAO.getUserPosition(username).getRoleID();
-		else {
+		
+		User user = (User) sessionMap.get("user");
+		Position.Role position;
+		if(user == null)
 			addActionError("Not currently logged in.");
-		}
+		
+		position = Position.Role.values()[user.getPos().getRoleID() - 1];
 
-		if(!(positionID == Position.Role.SYSTEM_ADMIN.getRoleValue() ||
-				positionID == Position.Role.ADMIN.getRoleValue() ||
-				positionID == Position.Role.DOCTOR.getRoleValue() ||
-				positionID == Position.Role.NURSE.getRoleValue())) {
+		if(!(position == Position.Role.SYSTEM_ADMIN ||
+				position == Position.Role.ADMIN ||
+				position == Position.Role.DOCTOR) ||
+				position == Position.Role.NURSE) {
 			addActionError("Insufficient Privileges.");
 		}
-		*/
+		
 	}
 
 	public DatatableObject getReturnObj() {
@@ -102,14 +120,6 @@ public class VideoCaptureSearchResultsAction extends ActionSupport implements Se
 
 	public void setRequest(HttpServletRequest request) {
 		this.request = request;
-	}
-
-	public SessionMap<String, Object> getSessionMap() {
-		return sessionMap;
-	}
-
-	public void setSessionMap(SessionMap<String, Object> sessionMap) {
-		this.sessionMap = sessionMap;
 	}
 
 	@Override

@@ -9,6 +9,8 @@
 <title>Insert title here</title>
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript">
+var date;
+var room;
 	$(function loadRoomNames() {
 		$.post("search/ListRoomsAction.action",
 				function(response, status, jqXHR) {
@@ -27,12 +29,25 @@
 				});
 	});
 
-	$("#dateInput").change(function() {
-		$("#roomSelectInput").css('visibility', 'visible');
-	});
+	$("#dateInput").change(
+		function() {
+			date = $("#dateInput").val();
+			room = $("#roomSelectInput").val();
+			console.log("date: " + date);
+			console.log("room: " + room);
+			var params = {
+				"date" : $("#dateInput").val(),
+				"room" : $("#roomSelectInput").val()
+			}
+			console.log("VideoCaptureSearchResults.jsp?" + $.param(params));
+			$("#resultPage").load(
+					"VideoCaptureSearchResults.jsp?" + $.param(params));
+		});
 
 	$("#roomSelectInput").change(
 			function() {
+				date = $("#dateInput").val();
+				room = $("#roomSelectInput").val();
 				var params = {
 					"date" : $("#dateInput").val(),
 					"room" : $("#roomSelectInput").val()
@@ -44,6 +59,7 @@
 
 	$(document).ready(function() {
 		$("#dateInput").val(new Date().toDateInputValue());
+		$("#dateInput").trigger('change');
 		<%-- loadRoomNames(); --%>
 	});
 	
@@ -52,6 +68,32 @@
 	    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
 	    return local.toJSON().slice(0,10);
 	});
+	
+	function insertParam(key, value) {
+        key = escape(key); value = escape(value);
+
+        var kvp = document.location.search.substr(1).split('&');
+        if (kvp == '') {
+            document.location.search = '?' + key + '=' + value;
+        }
+        else {
+
+            var i = kvp.length; var x; while (i--) {
+                x = kvp[i].split('=');
+
+                if (x[0] == key) {
+                    x[1] = value;
+                    kvp[i] = x.join('=');
+                    break;
+                }
+            }
+
+            if (i < 0) { kvp[kvp.length] = [key, value].join('='); }
+
+            //this will reload the page, it's likely better to store this until finished
+            document.location.search = kvp.join('&');
+        }
+    }
 </script>
 </head>
 <body>

@@ -11,6 +11,7 @@ import java.util.concurrent.TimeUnit;
 import javax.persistence.TemporalType;
 
 import org.hibernate.Criteria;
+import org.hibernate.FetchMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,6 +23,7 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.TimestampType;
 
 import edu.iastate.cs.proj461.room.Room;
+import edu.iastate.cs.proj461.util.HibernateUtil;
 
 public class VideoDAOImpl implements VideoDAO{
 	
@@ -119,40 +121,67 @@ public class VideoDAOImpl implements VideoDAO{
 		//return results;
 	}
 	
-	 private static Date removeTime(Date date) {
-	        Calendar cal = Calendar.getInstance();
-	        cal.setTime(date);
-	        cal.set(Calendar.HOUR_OF_DAY, 0);
-	        cal.set(Calendar.MINUTE, 0);
-	        cal.set(Calendar.SECOND, 0);
-	        cal.set(Calendar.MILLISECOND, 0);
-	        return cal.getTime();
-	    }
+	private static Date removeTime(Date date) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		return cal.getTime();
+	}
 
 	@Override
 	public List<Video> findVideoByCapturedDateTimeAndRoom(String datetime,
 			int roomID) {
 		Session session = null;
 		Transaction tx = null;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		final List<Video> results = new LinkedList<Video>();
+		
+		Date startOfDay = null;
+		try {
+			startOfDay = dateFormat.parse(datetime);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Date endOfDay = new Date(startOfDay.getTime() + TimeUnit.DAYS.toMillis(1) - 1);
 		
 		try {
 			session = sf.openSession();
 			tx = session.beginTransaction();
-			//for(final Object o: session.createCriteria(Room.class).list())
-			String hql = "from Video v where v.CapturedDateTime = :datetime";
-			if(roomID >= 0)
-				hql += "and v.roomID = :roomId";
-			Query query = session.createQuery(hql);
-			if(roomID >= 0)
-				query.setParameter("roomId", roomID);
-			query.setParameter("datetime", datetime);
-			for(final Object o: query.list())
+			
+			Criteria crit = session.createCriteria(Video.class);
+			crit.setFetchMode("room", FetchMode.JOIN);
+			crit.setFetchMode("room.machine", FetchMode.JOIN);
+			crit.setFetchMode("machine", FetchMode.JOIN);
+			crit.add(Restrictions.ge("CapturedDateTime", startOfDay));
+			crit.add(Restrictions.le("CapturedDateTime", endOfDay));
+			if(roomID >= 0) {
+				crit.add(Restrictions.eq("room.roomID", roomID));
+			}
+			for(final Object o: crit.list())
 			{
-				//results.add( ((Room) o).getName() );
+				/*
+				if(!Hibernate.isPropertyInitialized(o, "room"))
+					Hibernate.initialize(((Video) o).getRoom());
+				
+				if(!Hibernate.isPropertyInitialized(o, "machine"))
+					Hibernate.initialize(((Video) o).getMachine());
+				*/
+				
+				//if(!Hibernate.isInitialized(o))
+					Hibernate.initialize((Video) o);
+				
+				
+				//results.add(HibernateUtil.initializeAndUnproxy((Video) o));
+				//System.out.println(((Video) o).getMachine().getId());
 				results.add((Video) o);
 			}
+			
+			//Hibernate.initialize(results);
 			tx.commit();
 			return results;
 		}
@@ -161,7 +190,7 @@ public class VideoDAOImpl implements VideoDAO{
 			throw ex;
 		}
 		finally {
-			session.close();
+			//session.close();
 		}
 	}
 	

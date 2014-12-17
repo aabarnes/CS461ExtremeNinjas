@@ -8,6 +8,7 @@ public interface UserDAO {
 	public Position getUserPosition(String username);
 	public List<User> getAllUsers();
 	public void addUser(User user);
-	public void updateUserInfo(User user);
+	public void updateUserInfo(User user, boolean passwordChanged);
+	public boolean userNameExists(String username);
 
 }

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
-	
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -10,6 +10,7 @@
 
 <link href="css/jquery-ui.css" rel="stylesheet" />
 <link href="css/jquery.dataTables.css" rel="stylesheet" />
+<link href="css/dataTables.tableTools.css" rel="stylesheet" />
 
 <script type="text/javascript" charset="utf8" src="js/jquery-1.11.1.js"></script>
 <script type="text/javascript" charset="utf8"
@@ -19,13 +20,14 @@
 <script>
 
 $(document).ready( function () {
-    $('#video_capture_search_table_id').DataTable( {
+    var table = $('#video_capture_search_table_id').DataTable( {
 		"ajax": {
 			"url": "search/VideoCaptureSearchResultsAction.action",
 			"data":  {
-					"datetime": getParameterByName("date"),
-					"roomIDString": getParameterByName("room")
-					
+					"datetime": date,
+					"roomIDString": room
+					<%--"datetime": getParameterByName("date"),
+					"roomIDString": getParameterByName("room")--%>
 				}
 			},
 		"columns": [
@@ -44,18 +46,21 @@ $(document).ready( function () {
 
 		  { 	"data"	: "uploadedFileName" 	}
 		],
+		"dom": 'T<"clear">lfrtip',
 		"oTableTools": {
-        	"sSwfPath": "media/copy_csv_xls_pdf.swf"
+        	"sSwfPath": "media/copy_csv_xls_pdf.swf",
+        	"aButtons": [
+        	                "copy",
+        	                "print",
+        	                {
+        	                    "sExtends":    "collection",
+        	                    "sButtonText": "Save",
+        	                    "aButtons":    [ "csv", "xls", "pdf" ]
+        	                }
+        	            ]
         }
 	} );
 } );
-
-function getParameterByName(name) {
-    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
-    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
-        results = regex.exec(location.search); <%-- May need to changed to window.location.search --%>
-    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
-}
 
 </script>
 
