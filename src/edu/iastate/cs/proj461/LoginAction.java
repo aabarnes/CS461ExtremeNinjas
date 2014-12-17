@@ -9,6 +9,7 @@ import org.jasypt.util.password.StrongPasswordEncryptor;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
+import edu.iastate.cs.proj461.user.Position;
 import edu.iastate.cs.proj461.user.User;
 import edu.iastate.cs.proj461.user.UserDAO;
 import edu.iastate.cs.proj461.user.UserDAOImpl;
@@ -31,16 +32,18 @@ public class LoginAction extends ActionSupport implements SessionAware{
 	
 	@Override
 	public void validate() {
-		/*
+		
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
 		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
 		user = userDAO.getUserByUsername(username);
-		if(user != null && passwordEncryptor.checkPassword(password, user.getPassword()))
-			sessionMap.put("username", username);
+		if(user != null && passwordEncryptor.checkPassword(password, user.getPassword())) {
+			sessionMap.put("user", user);
+			sessionMap.put("role", Position.Role.values()[user.getPos().getRoleID() - 1].name());
+		}
 		else {
 			addActionError("Incorrect Username/Password.");
 		}
-		*/
+		
 	}
 
 	@Override
