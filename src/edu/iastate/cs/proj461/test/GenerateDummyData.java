@@ -157,8 +157,25 @@ public class GenerateDummyData {
 		PositionDAO positionDAO = new PositionDAOImpl(HibernateUtil.getSessionFactory());
 		
 		Position position = new Position();
-		position.setTitle("CEO");
-		positionDAO.addPostion(position);
+		if(!positionDAO.positionExists("SYSTEM_ADMIN")) {
+			position.setTitle("SYSTEM_ADMIN");
+			positionDAO.addPostion(position);
+		}
+		if(!positionDAO.positionExists("ADMIN")) {
+			position = new Position();
+			position.setTitle("ADMIN");
+			positionDAO.addPostion(position);
+		}
+		if(!positionDAO.positionExists("DOCTOR")) {
+			position = new Position();
+			position.setTitle("DOCTOR");
+			positionDAO.addPostion(position);
+		}
+		if(!positionDAO.positionExists("NURSE")) {
+			position = new Position();
+			position.setTitle("NURSE");
+			positionDAO.addPostion(position);
+		}
 	}
 	
 	private static void GenerateUsers() {

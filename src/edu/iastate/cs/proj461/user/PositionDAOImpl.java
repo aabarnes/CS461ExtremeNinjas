@@ -47,4 +47,28 @@ public class PositionDAOImpl implements PositionDAO{
 		}
 	}
 
+	@Override
+	public boolean positionExists(String role) {
+		Session session = null;
+		Transaction tx = null;
+
+		User user = null;
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			Criteria crit = session.createCriteria(Position.class);
+			crit.add(Restrictions.eq("title", role));
+			user = (User) crit.uniqueResult();
+			tx.commit();
+			return (user != null);
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	}
+
 }
