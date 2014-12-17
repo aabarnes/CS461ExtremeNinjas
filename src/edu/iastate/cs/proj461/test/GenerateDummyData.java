@@ -12,6 +12,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import edu.iastate.cs.proj461.disk.Disk;
+import edu.iastate.cs.proj461.disk.DiskDAO;
+import edu.iastate.cs.proj461.disk.DiskDAOImpl;
+import edu.iastate.cs.proj461.disk.DiskPK;
 import edu.iastate.cs.proj461.machine.Machine;
 import edu.iastate.cs.proj461.machine.MachineDAO;
 import edu.iastate.cs.proj461.machine.MachineDAOImpl;
@@ -104,16 +108,22 @@ public class GenerateDummyData {
 	private static void GenerateDummyMachines() {
 		Random random = new Random();
 		MachineDAO machineDAO = new MachineDAOImpl(HibernateUtil.getSessionFactory());
+		DiskDAO diskDAO = new DiskDAOImpl(HibernateUtil.getSessionFactory());
 
 		for(int i = 0; i < numMachines; i++) {
 			
 			Machine machine = new Machine();
 			machine.setMachineIP(generateRandomIP());
 			machine.setCaptureState(State.values()[random.nextInt(State.values().length)].name());
-			machine.setDiskState(State.values()[random.nextInt(State.values().length)].name());
 			machine.setMachineState(State.values()[random.nextInt(State.values().length)].name());
-			
 			machineDAO.addMachine(machine);
+			for(int j = 0; j < (random.nextInt(4) + 1); j++) {
+				Disk disk = new Disk();
+				disk.setDiskPK(new DiskPK(machine, j));
+				disk.setCapacity(1000);
+				disk.setPercentFull(random.nextDouble() * 100);
+				diskDAO.addDisk(disk);
+			}
 		}
 	}
 	
