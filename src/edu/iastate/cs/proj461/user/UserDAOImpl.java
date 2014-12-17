@@ -8,6 +8,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.jasypt.util.password.StrongPasswordEncryptor;
+
+import edu.iastate.cs.proj461.room.Room;
 
 public class UserDAOImpl implements UserDAO{
 	
@@ -59,17 +62,48 @@ public class UserDAOImpl implements UserDAO{
 	public void addUser(User user) {
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
+		StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+		user.setPassword(passwordEncryptor.encryptPassword(user.getPassword()));
 		session.persist(user);
 		tx.commit();
 		session.close();
 	}
 	
-	public void updateUserInfo(User user) {
+	public void updateUserInfo(User user, boolean passwordChanged) {
 		Session session = sf.openSession();
 		Transaction tx = session.beginTransaction();
+		if(passwordChanged) {
+			StrongPasswordEncryptor passwordEncryptor = new StrongPasswordEncryptor();
+			user.setPassword(passwordEncryptor.encryptPassword(user.getPassword()));
+		}
 		session.update(user);
 		tx.commit();
 		session.close();
+	}
+	
+	public boolean userNameExists(String username) {
+
+		Session session = null;
+		Transaction tx = null;
+
+		User user = null;
+		try {
+			session  = sf.openSession();
+			tx = session.beginTransaction();
+			Criteria crit = session.createCriteria(User.class);
+			crit.add(Restrictions.eq("userName", username));
+			user = (User) crit.uniqueResult();
+			tx.commit();
+			return (user != null);
+		}
+		catch (Exception ex) {
+			if(tx != null) tx.rollback();
+			throw ex;
+		}
+		finally {
+			session.close();
+		}
+	
 	}
 
 }
