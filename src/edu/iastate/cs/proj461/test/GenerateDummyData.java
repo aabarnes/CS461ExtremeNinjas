@@ -146,7 +146,7 @@ public class GenerateDummyData {
 			} while(machines.contains(temp));
 			machines.add(temp);
 			MachineSoftware machineSoftware = machineSoftwareDAO.getMachineSoftwareById(1);
-			Machine machine = machineDAO.getMachineInfo(temp+1);
+			Machine machine = machineDAO.getMachine(temp+1);
 			machineSpecValue.setMachineSpecValueId(new MachineSpecValuePK(machine, machineSoftware));
 			machineSpecValue.setValue("250");
 			machineSpecValueDAO.updateMachineSpecValue(machineSpecValue);
@@ -155,17 +155,39 @@ public class GenerateDummyData {
 	
 	private static void GeneratePositions() {
 		PositionDAO positionDAO = new PositionDAOImpl(HibernateUtil.getSessionFactory());
-		for(int i = 0; i < 1; i++) {
-			Position position = new Position();
-			position.setTitle("CEO");
-			positionDAO.addPostion(position);
-		}
+		
+		Position position = new Position();
+		position.setTitle("CEO");
+		positionDAO.addPostion(position);
 	}
 	
 	private static void GenerateUsers() {
 		Random random = new Random();
 		UserDAO userDAO = new UserDAOImpl(HibernateUtil.getSessionFactory());
 		PositionDAO positionDAO = new PositionDAOImpl(HibernateUtil.getSessionFactory());
+		if(!userDAO.userNameExists("root")) {
+			User user = new User();
+			user.setFirstName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setLastName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setUserName("root");
+			user.setPassword("root");
+			user.setEmail(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
+			Position position = positionDAO.getPositionById(1);
+			user.setPos(position);
+			userDAO.addUser(user);
+		}
+		if(!userDAO.userNameExists("nurse")) {
+			User user = new User();
+			user.setFirstName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setLastName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
+			user.setUserName("nurse");
+			user.setPassword("nurse");
+			user.setEmail(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
+			Position position = positionDAO.getPositionById(4);
+			user.setPos(position);
+			userDAO.addUser(user);
+		}
+			
 		for(int i = 0; i < numUsers; i++) {
 			User user = new User();
 			user.setFirstName(RandomStringUtils.random(random.nextInt(10) + 1, true, false));
@@ -173,7 +195,7 @@ public class GenerateDummyData {
 			user.setUserName(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
 			user.setPassword(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
 			user.setEmail(RandomStringUtils.random(random.nextInt(10) + 1, true, true));
-			Position position = positionDAO.getPositionById(1);
+			Position position = positionDAO.getPositionById(random.nextInt(2) + 2);
 			user.setPos(position);
 			userDAO.addUser(user);
 		}
@@ -194,7 +216,7 @@ public class GenerateDummyData {
 				temp = random.nextInt(numMachines) + 1;
 			} while(machines.contains(temp));
 			machines.add(temp);
-			Machine machine = machineDAO.getMachineInfo(temp);
+			Machine machine = machineDAO.getMachine(temp);
 			if(machine == null)
 				System.out.println("Machine null at id: " + temp);
 			room.setMachine(machine);
@@ -225,7 +247,7 @@ public class GenerateDummyData {
 			video.setRoom(room);
 			video.setSize((int)(Math.random() * 1024));
 			video.setLength((int)(Math.random() * 1024));
-			Machine machine = machineDAO.getMachineInfo(roomMachine.get(room.getRoomID()));
+			Machine machine = machineDAO.getMachine(roomMachine.get(room.getRoomID()));
 			if(machine == null)
 				System.out.println("Machine null with id: " + roomMachine.get(room.getRoomID()));
 			video.setMachine(machine);
