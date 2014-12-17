@@ -11,7 +11,6 @@
 		</id>
 		<property name="machineIP" column="MachineIP" type="string"/>
 		<property name="captureState" column="CaptureState" type="string"/>
-		<property name="diskState" column="DiskState" type="string"/>
 		<property name="machineState" column="MachineState" type="string"/>
 			
 	</class>

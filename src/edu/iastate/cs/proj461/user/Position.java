@@ -22,6 +22,10 @@ public class Position {
 		public int getRoleValue() {
 			return value;
 		}
+		
+		public String getName() {
+			return this.name();
+		}
 		private int value;
 	}
 	

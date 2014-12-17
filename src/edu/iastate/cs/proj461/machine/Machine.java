@@ -5,18 +5,16 @@ public class Machine {
 	private int id;
 	private String machineIP;
 	private String captureState;
-	private String diskState;
 	private String machineState;
 	
 	public Machine() {
 		
 	}
 	
-	public Machine(int id, String machineIP, String captureState, String diskState, String machineState){
+	public Machine(int id, String machineIP, String captureState, String machineState){
 		this.id = id;
 		this.machineIP = machineIP;
 		this.captureState = captureState;
-		this.diskState = diskState;
 		this.machineState = machineState;
 	}
 	
@@ -42,14 +40,6 @@ public class Machine {
 	
 	public void setCaptureState(String captureState) {
 		this.captureState = captureState;
-	}
-	
-	public String getDiskState() {
-		return diskState;
-	}
-	
-	public void setDiskState(String diskState) {
-		this.diskState = diskState;
 	}
 	
 	public String getMachineState() {
